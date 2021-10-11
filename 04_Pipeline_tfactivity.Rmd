@@ -1,0 +1,326 @@
+---
+title: "04_Pipeline_tfactivity"
+output: html_notebook
+---
+
+
+
+```{r}
+library(gridExtra)
+library(ggrepel)
+library(reshape)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(viper)
+source('./fun/viper_function.R')
+library(ComplexHeatmap)
+library(dorothea)
+library(egg)
+library(xlsx)
+library(ggpubr)
+source('./fun/multiORA.R')
+```
+
+
+
+```{r}
+#load Dorothea Regulons
+data(dorothea_hs, package = "dorothea")
+regulons <- dorothea_hs %>%
+  dplyr::filter(confidence %in% c("A", "B","C"))
+regulons2 <- df2regulon(regulons)
+
+regulonsALL <- dorothea_hs %>%
+  dplyr::filter(confidence %in% c("A", "B","C","D","E"))
+regulonsALL2 <- df2regulon(regulonsALL)
+
+```
+
+
+```{r}
+## load our GES data (from '02_Pipeline_EA.Rmd')
+load('./data/GES_ma_fe.RData')
+load('./data/batch-limma-CVD-Control.RData')
+finalclin = clinforlimma
+finalgenemat = exprforlimma
+
+
+```
+
+
+## calculate enrichment score using msviper  (gene permutation)
+```{r}
+
+# tictoc::tic()
+# dnull <- viperNullgene(expset=GES_ma_mat, per= 20000)
+# tictoc::toc()
+# TFactivity_ma <- msviper(GES_ma_mat, regulons2, dnull, minsize = 5, cores = 1)
+# tf_activities_ma = data.frame(NES = TFactivity_ma$es$nes, 
+#                               PV = TFactivity_ma$es$p.value,
+#                               TF = names(TFactivity_ma$es$nes))
+# tf_activities_ma$p.adj <- p.adjust(tf_activities_ma$PV, method = 'fdr', n = nrow(tf_activities_ma))
+# 
+# 
+# tictoc::tic()
+# dnull <- viperNullgene(expset=GES_fe_mat, per= 20000)
+# tictoc::toc()
+# TFactivity_fe <- msviper(GES_fe_mat, regulons2, dnull, minsize = 5, cores = 1)
+# tf_activities_fe = data.frame(NES = TFactivity_fe$es$nes, 
+#                               PV = TFactivity_fe$es$p.value,
+#                               TF = names(TFactivity_fe$es$nes))
+# tf_activities_fe$p.adj <- p.adjust(tf_activities_fe$PV, method = 'fdr', n = nrow(tf_activities_fe))
+# 
+# rm(dnull)
+# TF_activity_all <- merge(tf_activities_ma, tf_activities_fe, by='TF', all=TRUE)
+# colnames(TF_activity_all) <- c('TF', 'NES.male','PV.male','p.adj.male','NES.female','PV.female','p.adj.female')
+# flagname = 'GenePerm'
+
+```
+
+
+
+
+## calculate enrichment score using msviper  (sample permutation)
+```{r}
+tictoc::tic()
+dnullma <- viperNulllimma(expset=exprs_hgnc_ma, clin=clin_ma, per = 100, repos=TRUE)
+tictoc::toc()
+tictoc::tic()
+dnullfe <- viperNulllimma(expset=exprs_hgnc_fe, clin=clin_fe, per = 100, repos=TRUE)
+tictoc::toc()
+
+
+TFactivity_ma <- msviper(GES_ma_mat, regulons2, dnullma, minsize = 5, cores = 1)
+# plot(TFactivity_ma, mrs = 30, cex=1, pval = 0.00)
+tf_activities_ma_sampperm = data.frame(NES = TFactivity_ma$es$nes, 
+                              PV = TFactivity_ma$es$p.value,
+                              TF = names(TFactivity_ma$es$nes))
+tf_activities_ma_sampperm$p.adj <- p.adjust(tf_activities_ma_sampperm$PV, method = 'fdr', n = nrow(tf_activities_ma_sampperm))
+
+
+TFactivity_fe <- msviper(GES_fe_mat, regulons2, dnullfe, minsize = 5, cores = 1)
+tf_activities_fe_sampperm = data.frame(NES = TFactivity_fe$es$nes, 
+                              PV = TFactivity_fe$es$p.value,
+                              TF = names(TFactivity_fe$es$nes))
+tf_activities_fe_sampperm$p.adj <- p.adjust(tf_activities_fe_sampperm$PV, method = 'fdr', n = nrow(tf_activities_fe_sampperm))
+
+
+TF_activity_all <- merge(tf_activities_ma_sampperm, tf_activities_fe_sampperm, by='TF', all=TRUE)
+colnames(TF_activity_all) <- c('TF', 'NES.male','PV.male','p.adj.male','NES.female','PV.female','p.adj.female')
+flagname = 'samplePerm'
+```
+
+
+
+
+
+
+# TF activity visualization by 2d plot (male vs female)
+```{r}
+# TF activity visualization by 2d plot
+cyl = data.frame(rep(NA,nrow(TF_activity_all)) ,row.names = TF_activity_all$TF)
+cyl[abs(TF_activity_all$NES.female)>1.96 & abs(TF_activity_all$NES.male)<1.96 & abs(TF_activity_all$NES.female-TF_activity_all$NES.male)>2 ,] <- 'Female specific TF' 
+cyl[abs(TF_activity_all$NES.male)>1.96 & abs(TF_activity_all$NES.female)<1.96 & abs(TF_activity_all$NES.female-TF_activity_all$NES.male)>2 ,] <- 'Male specific TF' 
+cyl[abs((TF_activity_all$NES.male)>1.96 | abs(TF_activity_all$NES.female)>1.96)& abs(TF_activity_all$NES.female-TF_activity_all$NES.male)<1,] <- 'Shared TF'
+cyl[abs(TF_activity_all$NES.male)>1.96 & abs(TF_activity_all$NES.female)>1.96,] <- 'Shared TF'
+TF_activity_all$labels <- NA
+TF_activity_all$labels <- factor(cyl[,1])
+
+
+jpeg(paste0("./results/TF_FvsM",flagname,".jpg"), height = 1000, width = 1300, res = 150)
+ggplot(data = TF_activity_all, aes(x = NES.male, y = NES.female, color = NES.female-NES.male)) +
+  geom_point(size = 3)+
+  scale_color_gradient2(midpoint = 0, 
+                        low = "darkblue", mid = "white",high = "darkred", space = "Lab" )+
+  new_scale('color')+
+  geom_label_repel(aes(label = TF, color = labels),fontface = "bold", 
+                  data = dplyr::filter(TF_activity_all, !is.na(labels)))+
+  scale_colour_manual(values = c("Female specific TF" = "red", "Male specific TF" = "blue", "Shared TF" = "black"))+
+  # ggtitle("TF activities (Female vs male)")+
+  labs(x = "TF activity males (NES value)",y="TF activity females (NES value)")+
+  theme(
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 15),
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 15))
+dev.off()
+
+
+
+```
+
+
+
+
+## 2D plot of a TF (female vs Male)
+```{r}
+GES_HGNC_ALL <- merge(GES_ma_HGNC, GES_fe_HGNC, by='ID', all=TRUE, suffixes = c(".ma",".fe"))
+tfname = c("IRF3","HNF1A")
+i=1
+
+p <- TF2dplot(GES_HGNC_ALL,  tfname[i], axis = 't', label.by='P.Value', cutoff = 0.05)
+jpeg(paste0("./results/",tfname[i]," TF.jpg"), width = 1900, height = 1900, res = 170)
+print(p[[i]])
+dev.off()
+
+
+```
+
+
+
+## SAVE DATA FOR CARNICAL
+```{r}
+
+mergeTF <- function(tfactma,tfactfe){
+TF_activity_all <- merge(tfactma, tfactfe, by='TF', all=TRUE)
+colnames(TF_activity_all) <- c('TF', 'NES.male','PV.male','p.adj.male','NES.female','PV.female','p.adj.female')
+cyl = data.frame(rep(NA,nrow(TF_activity_all)) ,row.names = TF_activity_all$TF)
+cyl[abs(TF_activity_all$NES.female)>1.96 & abs(TF_activity_all$NES.male)<1.96 & abs(TF_activity_all$NES.female-TF_activity_all$NES.male)>2 ,] <- 'Female specific TF' 
+cyl[abs(TF_activity_all$NES.male)>1.96 & abs(TF_activity_all$NES.female)<1.96 & abs(TF_activity_all$NES.female-TF_activity_all$NES.male)>2 ,] <- 'Male specific TF' 
+cyl[abs((TF_activity_all$NES.male)>1.96 | abs(TF_activity_all$NES.female)>1.96)& abs(TF_activity_all$NES.female-TF_activity_all$NES.male)<1,] <- 'Shared TF'
+cyl[abs(TF_activity_all$NES.male)>1.96 & abs(TF_activity_all$NES.female)>1.96,] <- 'Shared TF'
+TF_activity_all$labels <- NA
+TF_activity_all$labels <- factor(cyl[,1])
+return(TF_activity_all)
+}
+
+TFactivity_Carnival_sampPerm <- mergeTF(tf_activities_ma_sampperm, tf_activities_fe_sampperm)
+
+saveRDS(TFactivity_Carnival_sampPerm, file = './data/TF4Carnival_samplePerm.rds')
+
+```
+
+
+
+
+#ORA
+```{r}
+GOFILE = './referencefile/c5.go.v7.4.symbols.gmt'
+pathways = "./referencefile/c2.cp.v7.2.symbols.gmt"
+bgtf = unique(regulons$tf)
+bgta <- regulons$target[TF_activity_all$TF %in% bgtf]
+bg <-  unique(c(TF_activity_all$TF,bgta))
+
+
+CHOICE = expand.grid(reg = c('up','dn'),
+                     database = c('pathway','GO'))
+CHOICE = sapply(CHOICE,as.character)
+listname <- apply(CHOICE, 1 , function(x) paste(x, collapse = "_"))
+
+
+TF_male_geneset = TF_activity_all[TF_activity_all$labels %in% 'Male specific TF',]
+TF_female_geneset = TF_activity_all[TF_activity_all$labels %in% 'Female specific TF',]
+TF_shared_geneset = TF_activity_all[TF_activity_all$labels %in% 'Shared TF',]
+
+
+# maleTFORAList <- apply(CHOICE, 1, function(x) TF_ORA(geneset = TF_male_geneset,
+#                                                      regulons=regulons,
+#                                                          NESname = 'NES.male',
+#                                                          PVname = NULL,
+#                                                          genename = 'TF',
+#                                                          cases = x, 
+#                                                          bg = bg))
+# names(maleTFORAList) <- listname
+# 
+# femaleTFORAList <- apply(CHOICE, 1, function(x) TF_ORA(geneset = TF_female_geneset,
+#                                                      regulons=regulons,
+#                                                      NESname = 'NES.female',
+#                                                      PVname = NULL,
+#                                                      genename = 'TF',
+#                                                      cases = x, 
+#                                                      bg = bg))
+# names(femaleTFORAList) <- listname
+# 
+# sharedTFORAList <- apply(CHOICE, 1, function(x) TF_ORA(geneset = TF_shared_geneset,
+#                                                        regulons=regulons,
+#                                                        NESname = 'NES.female',
+#                                                        PVname = NULL,
+#                                                        genename = 'TF',
+#                                                        cases = x, 
+#                                                        bg = bg))
+# names(sharedTFORAList) <- listname
+
+
+# parallel
+cl <- makeCluster (4)
+clusterEvalQ(cl, {source('./fun/multiORA.R')
+                  source('./fun/viper_function.R')})
+clusterExport(cl, list("TF_male_geneset", "TF_female_geneset", "TF_shared_geneset","regulons","bg"))
+
+maleTFORAList <- parApply(cl,  X = CHOICE, MARGIN = 1, FUN = function(x) TF_ORA(geneset = TF_male_geneset,
+                                                     regulons=regulons,
+                                                         NESname = 'NES.male',
+                                                         PVname = NULL,
+                                                         genename = 'TF',
+                                                         cases = x, 
+                                                         bg = bg))
+names(maleTFORAList) <- listname
+
+femaleTFORAList <- parApply(cl,  X = CHOICE, MARGIN = 1, FUN = function(x) TF_ORA(geneset = TF_female_geneset,
+                                                     regulons=regulons,
+                                                         NESname = 'NES.female',
+                                                         PVname = NULL,
+                                                         genename = 'TF',
+                                                         cases = x, 
+                                                         bg = bg))
+names(femaleTFORAList) <- listname
+
+sharedTFORAList <- parApply(cl,  X = CHOICE, MARGIN = 1, FUN = function(x) TF_ORA(geneset = TF_shared_geneset,
+                                                       regulons=regulons,
+                                                       NESname = 'NES.female',
+                                                       PVname = NULL,
+                                                       genename = 'TF',
+                                                       cases = x, 
+                                                       bg = bg))
+names(sharedTFORAList) <- listname
+stopCluster (cl)
+
+
+
+```
+
+
+
+# ORA VISUALIZATION
+```{r}
+# ORA VISUALIZATION
+# Combine males and females results
+PathwayLIST=list(maleTFORAList, femaleTFORAList)
+names(PathwayLIST) = c('Male','Female')
+PathwayAll_df <- reorganisedf(PathwayLIST)
+
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'GO',
+                      split = TRUE,
+                      top = 10,
+                      wid = 1500,
+                      height = 1000,
+                      pcutoff = 0.05,
+                      break_by = 5,
+                      filename = "./results/ORATFGO top10 samplePerm.jpg")
+
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'pathway',
+                      split = TRUE,
+                      top = 10,
+                      wid = 2200,
+                      height = 1200,
+                      pcutoff = 0.05,
+                      break_by = 5,
+                      filename = "./results/ORATFPathway top10 samplePerm.jpg")
+
+```
+
+
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

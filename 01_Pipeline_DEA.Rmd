@@ -1,0 +1,126 @@
+---
+title: "01_Pipeline_DEA"
+author: "Chang Lu"
+date: "5/11/2020"
+---
+
+
+
+## Introduction
+
+This is the pipeline of Differential Gene Analysis of Gender Study in CVD on combined data (GSE 9820 and CTMM cohort).
+
+
+## library packages
+```{r}
+library(pracma)
+library(limma)
+library(xlsx)
+library(BatchQC)
+library(factoextra)
+library(lumi)
+library(dplyr)
+```
+
+
+
+```{r}
+##loading GSE 9820 and CTMM cohort data
+load('./data/Dataforlimma30demo.RData') 
+# clinforlimma :clinical informations of patients: sex, ages, batch and indication
+# exprforlimma :gene expression data
+
+```
+
+
+
+```{r}
+## gene ID to gene hgnc_symbol
+require(lumiHumanIDMapping)
+
+mappingInfo <- getNuIDMappingInfo(lib.mapping='lumiHumanIDMapping') %>% 
+  dplyr::rename(genes = 'EntrezID') %>% distinct(genes, .keep_all= TRUE)
+
+geneInfo = data.frame(genes = rownames(exprforlimma), row.names = rownames(exprforlimma))  
+geneInfo = geneInfo %>% 
+  left_join(mappingInfo %>% dplyr::select(genes,Symbol),by='genes') %>%
+  dplyr::rename(hgnc_symbol = 'Symbol')
+```
+
+
+# limma (add batches as coviarates)
+```{r}
+TS <- paste(clinforlimma$sex,clinforlimma$indication, sep=".")
+TS <- factor(TS, levels=unique(TS))
+
+batch <- as.factor(clinforlimma$batch)
+design2 <- model.matrix(~0 + TS + batch + clinforlimma$age)
+colnames(design2)[1:4] <- c("male.CVD","male.healthy","female.CVD" ,"female.healthy")
+colnames(design2)[ncol(design2)] <- c("age")
+
+fit.limma <- lmFit(exprforlimma, design2)
+cont.matrix <- makeContrasts(
+  CVDvsHealthyinMale = male.CVD - male.healthy,
+  CVDvsHealthyinFemale = female.CVD - female.healthy,
+  CVDMalevsFemale = male.CVD - female.CVD,
+  HealthyMalevsFemale = male.healthy - female.healthy,
+  levels = design2)
+fit.limma2 <- contrasts.fit(fit.limma, cont.matrix)
+fit.limma2 <- eBayes(fit.limma2)
+
+# plotMD(fit.limma2,column=3)
+# volcanoplot(fit.limma2,coef=4,highlight=2)
+```
+
+
+
+
+```{r}
+# draw venn diagram
+results <- decideTests(fit.limma2, adjust.method = "fdr", p.value = 0.05)
+jpeg('./results/venn_limma_correctage_pv=0.05_fdr.jpg',width = 800, height = 600)
+vennDiagram(results)
+dev.off()
+
+```
+
+
+
+
+```{r}
+# DEA results
+male_DEG_limma = topTable(fit.limma2, coef="CVDvsHealthyinMale",   number = 20000, p.value = 1, adjust.method="fdr")
+female_DEG_limma = topTable(fit.limma2, coef="CVDvsHealthyinFemale", number = 20000,p.value = 1, adjust.method="fdr")
+CVDMF_DEG_limma = topTable(fit.limma2, coef="CVDMalevsFemale",   number = 20000, p.value = 1, adjust.method="fdr")
+HealthMF_DEG_limma = topTable(fit.limma2, coef="HealthyMalevsFemale", number = 20000,p.value = 1, adjust.method="fdr")
+```
+
+
+
+
+```{r}
+# draw volcano plot
+volcanoplot(fit.limma2, coef = 'CVDvsHealthyinMale')
+title('CVD vs Healthy on Male')
+volcanoplot(fit.limma2, coef = "CVDvsHealthyinFemale")
+title('CVD vs Healthy on female')
+```
+
+
+```{r}
+#save data 
+save(fit.limma2, male_DEG_limma, female_DEG_limma, CVDMF_DEG_limma, HealthMF_DEG_limma, clinforlimma ,exprforlimma, geneInfo, file = './data/batch-limma-CVD-Control.RData')
+```
+
+
+
+
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

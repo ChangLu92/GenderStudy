@@ -1,0 +1,398 @@
+---
+title: "03_Pipeline_PROGENY"
+output: html_notebook
+---
+
+```{r}
+library(progeny)
+library(gridExtra)
+library(ggrepel)
+library(reshape)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(viper)
+source('./fun/progeny_function.R')
+library(ComplexHeatmap)
+library(ggnewscale)
+```
+
+
+
+
+# download the raw progeny weight matrix
+```{r}
+prog_matrix_full = get("model_human_full", envir = .GlobalEnv)
+prog_w = reshape(prog_matrix_full[c("gene", "pathway",'weight')], idvar = "gene", timevar = "pathway", direction = "wide")
+colnames(prog_w) = stringr::str_remove(colnames(prog_w),'weight.')
+
+## calculating the adjusted pvalue across all weights (all pathways)
+prog_pv = reshape(prog_matrix_full[c("gene", "pathway",'p.value')], idvar = "gene", timevar = "pathway", direction = "wide")
+colnames(prog_pv) = stringr::str_remove(colnames(prog_pv),'p.value.')
+prog_matrix_full$adj.pv = p.adjust(prog_matrix_full$p.value, method = 'fdr', n = nrow(prog_matrix_full))
+prog_adjpv2 = reshape(prog_matrix_full[c("gene", "pathway",'adj.pv')], idvar = "gene", timevar = "pathway", direction = "wide")
+colnames(prog_adjpv2) = stringr::str_remove(colnames(prog_adjpv2),'adj.pv.')
+
+
+## calculating the adjusted pvalue for each pathway
+prog_adjpv = apply(prog_pv[,2:15], 2, function(x) {
+  adjp = matrix(nrow = length(x), ncol = 1)
+  xi = x[!is.na(x)]
+  adjp[!is.na(x)] = p.adjust(xi, method = 'fdr', n = length(xi))
+  return(adjp)
+})
+prog_adjpv = data.frame(prog_adjpv)
+prog_adjpv =  cbind(prog_pv$gene,prog_adjpv)
+colnames(prog_adjpv)[1] = 'gene'
+
+```
+
+
+
+## distribution of gene weights per pathway in 'model_human_full'
+```{r}
+jpeg(paste0("./results/progenyweight.jpg"), height = 800, width = 1200)
+ggplot(prog_matrix_full, aes(weight)) + 
+  geom_density()+
+  facet_wrap(~pathway,ncol=3)+scale_x_continuous(limits = c(-10, 10))+
+  theme(axis.text.y = element_text(face = "bold", size = 15),
+        axis.text.x = element_text(face = "bold", size = 15),
+        axis.title=element_text(size=20,face="bold"),
+        strip.text = element_text(size = 15),
+        legend.text = element_text(size = 15))+
+  xlab("weight")+ylab("density")
+dev.off()
+
+
+jpeg(paste0("./progenyweightboxplot.jpg"), height = 600, width = 1000)
+ggplot(prog_matrix_full,aes(x= pathway, y = weight)) + 
+  geom_boxplot()+
+  theme(axis.text.y = element_text(face = "bold", size = 15),
+        axis.text.x = element_text(face = "bold", size = 15),
+        axis.title=element_text(size=20,face="bold"),
+        strip.text = element_text(size = 15),
+        legend.text = element_text(size = 15))+
+  xlab("pathway")+ylab("weight")
+dev.off()
+
+```
+
+
+```{r}
+## load female's and male's GES data (from '02_Pipeline_EA.Rmd')
+load('./data/GES_ma_fe.RData')
+load('./data/batch-limma-CVD-Control.RData')
+finalclin = clinforlimma
+finalgenemat = exprforlimma
+
+
+```
+
+
+```{r}
+## extract the genes in Our dataset and check the distributions
+
+new_prog_matrix_full = prog_matrix_full[prog_matrix_full$gene %in% GES_fe_HGNC$ID,] 
+
+jpeg(paste0("./results/subprogenyweight.jpg"), height = 800, width = 1200)
+ggplot(new_prog_matrix_full, aes(weight)) + 
+  geom_density()+
+  facet_wrap(~pathway,ncol=3)+scale_x_continuous(limits = c(-10, 10))+
+  theme(axis.text.y = element_text(face = "bold", size = 15),
+        axis.text.x = element_text(face = "bold", size = 15),
+        axis.title=element_text(size=20,face="bold"),
+        strip.text = element_text(size = 15),
+        legend.text = element_text(size = 15))+
+  xlab("weight")+ylab("density")
+dev.off()
+
+jpeg(paste0("./results/subprogenyweightboxplot.jpg"), height = 600, width = 1000)
+ggplot(new_prog_matrix_full,aes(x= pathway, y = weight)) + 
+  geom_boxplot()+
+  theme(axis.text.y = element_text(face = "bold", size = 15),
+        axis.text.x = element_text(face = "bold", size = 15),
+        axis.title=element_text(size=20,face="bold"),
+        strip.text = element_text(size = 15),
+        legend.text = element_text(size = 15))+
+  xlab("pathway")+ylab("weight")
+dev.off()
+
+
+
+
+
+```
+
+
+
+## check the NES stability based on adjusted pvalue (prog_adjpv2) and top n genes
+## gene permulation (you can also choose sample permutation)
+```{r}
+source('./fun/progeny_function.R')
+toplist = seq(from = 10, to = 1000, by = 200)
+flagname = 'prog_adjpv2 topn genePerm'
+
+progScorelisttopadj_zs = sapply(toplist,function(x) getprogenyScore(pvmat = prog_adjpv2, 
+                                                                    top = x, 
+                                                                    zscore = TRUE,
+                                                                    perm.by = 'gene')) # or 'sample'
+
+prog_mat_p_zslist =lapply(seq(from = 1, to = length(progScorelisttopadj_zs)-1, by = 2), function(x) progScorelisttopadj_zs[[x]])
+progScorelist_zs = sapply(seq(from = 2, to = length(progScorelisttopadj_zs), by = 2), function(x) progScorelisttopadj_zs[[x]])
+
+
+progScorelisttopadj = sapply(toplist,function(x) getprogenyScore(pvmat = prog_adjpv2, 
+                                                                 top = x, 
+                                                                 zscore = FALSE,
+                                                                 perm.by = 'gene'))
+prog_mat_p_list = lapply(seq(from = 1, to = length(progScorelisttopadj)-1, by = 2), function(x) progScorelisttopadj[[x]])
+progScorelist = sapply(seq(from = 2, to = length(progScorelisttopadj), by = 2), function(x) progScorelisttopadj[[x]])
+
+## visualize the stability of NES by line chart
+linePlotVis(progScorelist, filename = paste0('./results/',flagname,'.jpg'), toplist, xlabel= 'top n')
+linePlotVis(progScorelist=progScorelist_zs, filename = paste0('./results/',flagname,'_zscore.jpg'), toplist=toplist, xlabel= 'top n')
+
+```
+
+
+
+
+## check the NES stability based on adjusted pvalue (prog_adjpv2) with increase of 'adjusted pvalue cutoff'
+## sample permulation
+```{r}
+source('./fun/progeny_function.R')
+source('./fun/viper_function.R')
+toplist = seq(from = 1, to = 4, by = 0.1)
+flagname = 'prog_adjpv2 pcutoff samplePerm'
+
+# sample permutation using limma 
+tictoc::tic()
+dnullma <- viperNulllimma(expset=exprs_hgnc_ma, clin=clin_ma, per = 100, repos=TRUE)
+tictoc::toc()
+tictoc::tic()
+dnullfe <- viperNulllimma(expset=exprs_hgnc_fe, clin=clin_fe, per = 100, repos=TRUE)
+tictoc::toc()
+
+
+progadjPVlist_permsam = sapply(toplist,function(x) getprogenyScorePV(pvmat = prog_adjpv2, 
+                                                                     logpv=x,
+                                                                     zscore = FALSE,
+                                                                     perm.by = 'sample',
+                                                                     dnullma = dnullma,
+                                                                     dnullfe = dnullfe)) #or 'gene'
+progadjPVlist_permsam_zs = sapply(toplist,function(x) getprogenyScorePV(pvmat = prog_adjpv2, 
+                                                                     logpv=x,
+                                                                     zscore = TRUE,
+                                                                     perm.by = 'sample',                                                                                                                             dnullma = dnullma,
+                                                                     dnullfe = dnullfe)) #or 'gene'
+
+prog_mat_p_list = lapply(seq(from = 1, to = length(progadjPVlist_permsam)-1, by = 2), function(x) progadjPVlist_permsam[[x]])
+progScorelist = sapply(seq(from = 2, to = length(progadjPVlist_permsam), by = 2), function(x) progadjPVlist_permsam[[x]])
+prog_mat_p_zslist = lapply(seq(from = 1, to = length(progadjPVlist_permsam_zs)-1, by = 2), function(x) progadjPVlist_permsam_zs[[x]])
+progScorelist_zs = sapply(seq(from = 2, to = length(progadjPVlist_permsam_zs), by = 2), function(x) progadjPVlist_permsam_zs[[x]])
+
+
+## visualize the stability of NES by line chart
+linePlotVis(progScorelist=progScorelist, filename = paste0('./results/',flagname,'.jpg'), toplist, xlabel= '-log10(adj.pv)')
+linePlotVis(progScorelist=progScorelist_zs, filename = paste0('./results/',flagname,'_zscore.jpg'), toplist=toplist, xlabel= '-log10(adj.pv)')
+
+```
+
+
+## save progeny results for CARNIVAL
+```{r}
+progScorelist_SamPerm = sapply(seq(from = 2, to = length(progadjPVlist_permsam), by = 2), function(x) progadjPVlist_permsam[[x]])
+saveRDS(progScorelist_SamPerm, file = './data/progeny4carnival_sampleperm.rds')
+
+```
+
+
+
+# all steps below were based on the results of 'prog_adjpv2 pcutoff samplePerm'
+# prog_mat_p_zslist data tube similalrity based on 'prog_adjpv2 pcutoff samplePerm'
+```{r}
+top = 1:4
+for (i in top) {
+  idx = which(toplist == i)
+  prog_mat_p = prog_mat_p_zslist[[idx]]
+  prog_mat_p_cor = cor(prog_mat_p[,2:15],method = "spearman")
+  jpeg(paste0('./results/corr_14pathway_zcoff_spearman_pv',i,'.jpg'), height = 1100, width = 1000, res = 180)
+  p = draw(Heatmap(prog_mat_p_cor, 
+                   name = "Correlation",
+                   heatmap_legend_param = list(direction = "horizontal")),
+           heatmap_legend_side = "bottom")
+  print(p)
+  dev.off()
+}
+
+jpeg('./results/corr_14pathway_zcoff_spearman_pv0.jpg', height = 1100, width = 1000, res = 180)
+prog_mat_p_cor = cor(prog_w[,2:15],use = "na.or.complete",method = "spearman")
+draw(Heatmap(prog_mat_p_cor, 
+             name = "Correlation",
+             heatmap_legend_param = list(direction = "horizontal")),
+     heatmap_legend_side = "bottom")
+dev.off()
+
+```
+
+
+# draw a scatter plot to visualize female and male specific TF regluons' avtivity at when adj.pv = 3
+```{r}
+pcutoff = 3
+idx = which(toplist == pcutoff)
+
+# # norm
+# progenyScore = sapply(seq(3*idx-1,3*idx), function(x) as.numeric(progScorelist[[x]]))  %>% 
+#   as.data.frame() %>% 
+#   add_column(Pathway = progScorelist[[1]])
+# flagname2 = flagname
+# colnames(progenyScore) <- c('male','female','Pathway')
+# prog_mat_p = prog_mat_p_list[[idx]]
+
+# # opposite pw
+# cyl = data.frame(rep('Others',nrow(progenyScore)) ,row.names = progenyScore$Pathway)
+# cyl[abs(progenyScore$female)>0.9 & abs(progenyScore$female-progenyScore$male)>0.5,]<- "Female specific Pathway"
+# cyl[abs(progenyScore$male)>0.9& abs(progenyScore$female-progenyScore$male)>0.5,]<- "Male specific Pathway"
+# cyl[abs(progenyScore$female)>0.9 & abs(progenyScore$male)>0.9,] <- "Shared significant Pathway"
+# progenyScore$labels <- NA
+# progenyScore$labels <- cyl[,1]
+
+
+# zscore
+progenyScore = sapply(seq(3*idx-1,3*idx), function(x) as.numeric(progScorelist_zs[[x]]))  %>% 
+  as.data.frame() %>% 
+  add_column(Pathway = progScorelist_zs[[1]])
+flagname2 = paste(flagname,'zscore')
+colnames(progenyScore) <- c('male','female','Pathway')
+prog_mat_p = prog_mat_p_list[[idx]]
+
+# female/male specific TF
+cyl = data.frame(rep('Others',nrow(progenyScore)) ,row.names = progenyScore$Pathway)
+cyl[abs(progenyScore$female)>1.96 & abs(progenyScore$female-progenyScore$male)>2,]<- "Female specific Pathway"
+cyl[abs(progenyScore$male)>1.96& abs(progenyScore$female-progenyScore$male)>2,]<- "Male specific Pathway"
+cyl[abs((progenyScore$male)>1.96 | abs(progenyScore$female)>1.96)& abs(progenyScore$female-progenyScore$male)<1,] <-"Shared significant Pathway"
+cyl[abs(progenyScore$female)>1.96 & abs(progenyScore$male)>1.96,] <- "Shared significant Pathway"
+progenyScore$labels <- NA
+progenyScore$labels <- cyl[,1]
+
+
+# scatter
+jpeg(paste0("./results/tstat_ProgenyscorePV_FvsM_TOP",as.character(10^(-pcutoff)), flagname2, ".jpg"), 
+     height = 800, width = 1200, res = 180)
+ggplot(data = progenyScore, aes(x = male, y = female, color = female-male)) + 
+  geom_point(size = 3)+
+  scale_color_gradient2(midpoint = 0, low = "darkblue", mid = "white",high = "darkred", space = "Lab" )+
+  new_scale('color')+
+  geom_text_repel(aes(label = Pathway, color = labels),fontface = "bold")+
+  scale_colour_manual(values = c("Female specific Pathway" = "red",
+                                 "Male specific Pathway" = "blue",
+                                 "Shared significant Pathway" = "black",
+                                 "Others" = "grey"))+
+  xlab('NES on Male')+ylab('NES on Female')+
+  ggtitle("Pathway Activity (Female vs Male)") 
+dev.off()
+
+
+```
+
+
+
+# draw a vocalno plot to visualize PI3K on female and male GES
+```{r}
+i = "PI3K"
+intersectgenes <- intersect(prog_w$gene[!is.na(prog_w[,i])],GES_fe_HGNC$ID)
+prog_wi =  prog_w[, c('gene',i)] %>% dplyr::filter(gene %in% intersectgenes) %>% dplyr::rename(ID = 'gene' )
+tmat_fe = merge(prog_wi, GES_fe_HGNC[GES_fe_HGNC$ID %in% intersectgenes,], by = 'ID')
+tmat_ma = merge(prog_wi, GES_ma_HGNC[GES_ma_HGNC$ID %in% intersectgenes,], by = 'ID')
+colnames(tmat_fe)[2] = colnames(tmat_ma)[2] = 'Progeny.weight'
+ProgenyvocalnoPlot(tmat= tmat_fe, 
+                   filename = paste0('./results/',i,' female ProgenyvocalnoPlot.jpg'), 
+                   xname = 'logFC',
+                   yname = "adj.P.Val",
+                   labelby = "adj.P.Val",
+                   weightname = 'Progeny.weight',
+                   top = 10)
+ProgenyvocalnoPlot(tmat= tmat_ma, 
+                   filename = paste0('./results/',i,' male ProgenyvocalnoPlot.jpg'), 
+                   xname = 'logFC',
+                   yname = "adj.P.Val",
+                   labelby = "adj.P.Val",
+                   weightname = 'Progeny.weight',
+                   top = 10) 
+
+
+```
+
+
+
+## scatter for visualizing female's and male's logFC and the most important genes that make the greatest contributions to pathway activity calculation
+```{r}
+# i = "NFkB"
+# i = "PI3K"    
+# i = "TGFb"     
+# i = "TNFa"  
+# i = "EGFR" 
+# i = "JAK-STAT"
+
+pathname = colnames(prog_w)[2:15]
+for(i in pathname){
+  
+ intersectgenes <- intersect(prog_w$gene[!is.na(prog_w[,i])],GES_fe_HGNC$ID)
+ prog_wi =  prog_w[, c('gene',i)] %>% dplyr::filter(gene %in% intersectgenes) 
+ colnames(prog_wi) = c("ID", "Progeny.weight")
+ tmat = merge(prog_wi,GES_fe_HGNC[GES_fe_HGNC$ID %in% intersectgenes,],by = 'ID')
+ tmat = merge(tmat,GES_ma_HGNC[GES_ma_HGNC$ID %in% intersectgenes,],by = 'ID',suffixes = c(".female",".male"))
+
+ 
+ tmat <- tmat %>% dplyr::mutate(contribute.male = Progeny.weight*t.male, contribute.female = Progeny.weight*t.female)
+ ProgenyScatterPlot(tmat= tmat, 
+                    filename = paste0('./results/',i,' ProgenyScatter-fe-logfc.jpg'), 
+                    xname = 'male',
+                    yname = "female",
+                    valuename = 'logFC',
+                    weightname = 'Progeny.weight',
+                    labelby = 'contribute.female',
+                    top = 10) 
+ 
+ ProgenyScatterPlot(tmat= tmat, 
+                    filename = paste0('./results/',i,' ProgenyScatter-ma-logfc.jpg'), 
+                    xname = 'male',
+                    yname = "female",
+                    valuename = 'logFC',
+                    weightname = 'Progeny.weight',
+                    labelby = 'contribute.male',
+                    top = 10) 
+ 
+ 
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

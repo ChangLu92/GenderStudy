@@ -1,0 +1,404 @@
+---
+title: "05_Pipeline_CARNIVAL"
+output: html_notebook
+---
+
+
+
+```{r}
+library(CARNIVAL)
+library(OmnipathR)
+source('./fun/CARNIVAL_functions.R')
+library(progeny)
+library(ggplot2)
+library(ComplexHeatmap)
+
+```
+
+
+# run carnival
+```{r}
+progScorelist_SamPerm = readRDS('./data/progeny4carnival_sampleperm.rds')
+TFactivity_Carnival_sampPerm = readRDS('./data/TF4Carnival_samplePerm.rds')
+
+
+# progeny for CARNIVAL
+load(file = system.file("progenyMembers.RData",package="CARNIVAL"))
+omniR <- OmnipathR::import_Omnipath_Interactions()
+sif = getSIF(omniR)
+
+
+# get initial nodes
+iniMTX = base::setdiff(sif$source, sif$target)
+iniciators = base::data.frame(base::matrix(data = NaN, nrow = 1, ncol = length(iniMTX)), stringsAsFactors = F)
+colnames(iniciators) = iniMTX
+
+
+CHOICE = expand.grid(sex = c('male','female'),
+                     p = c('normal','remo_unstable'),
+                     perm = 'samplePerm')
+CHOICE = sapply(CHOICE,as.character)
+listname <- apply(CHOICE, 1 , function(x) paste(x, collapse = "_"))
+
+
+adjpv = 3 # select adjpv = 3 
+toplist = seq(from = 1, to=4, by = 0.1)
+idx = which(toplist == adjpv)
+CARNIVAL_results_ALL = apply(CHOICE, 1, function(x) CARNIVAL_Pipeline(x, idx,sif))
+names(CARNIVAL_results_ALL) <- listname
+
+
+```
+
+
+
+# draw carnival network on cytoscape
+```{r}
+style.name = "CL1"
+cytopath = './results/'
+
+i = 7
+carnival_result = CARNIVAL_results_ALL[[i]]
+filename = names(CARNIVAL_results_ALL)[i]
+draw_CYTOSCAPE_CARNIVAL(evis = carnival_result$weightedSIF,
+                        nvis = carnival_result$nodesAttributes,
+                        style.name = style.name,
+                        title = filename)
+
+
+saveSession(paste0(cytopath,filename)) #.cys
+exportImage(paste0(cytopath,filename), 'PNG', zoom=200) #.png scaled by 200%
+# exportImage(full.path, 'PDF') #.pdf
+
+
+attrib <- carnival_result$attributesAll
+sifall <- carnival_result$sifAll
+
+sign = list()
+edges = list()
+for (i in 1:100) {
+  x = attrib[[i]]
+  y = sifall[[i]]
+  if(any(x[,1] %in% 'RUNX2')){ 
+    sign[[i]] = x[x[,1] %in% 'RUNX2', 2]
+    edges[[i]] = y[y[,3] %in% 'RUNX2',]
+} 
+}
+
+```
+
+
+
+#ORA
+```{r}
+CHOICE = expand.grid(sex = c('male','female'),
+                     p = c('normal','remo_unstable'),
+                     perm = c('GenePerm','samplePerm'))
+
+i=4
+CARNICAL_male_node = CARNIVAL_results_ALL[[2*i-1]]$nodesAttributes
+CARNICAL_female_node = CARNIVAL_results_ALL[[2*i]]$nodesAttributes
+filename = paste(CHOICE[2*i-1,2],CHOICE[2*i-1,3]) 
+
+
+
+
+
+CHOICEora = expand.grid(reg = c('up','dn'),
+                     database = c('pathway','GO'))
+CHOICEora = sapply(CHOICEora,as.character)
+listnameora <- apply(CHOICEora, 1 , function(x) paste(x, collapse = "_"))
+
+
+malePathwayList <- apply(CHOICEora, 1, function(x) multiORA(geneset = CARNICAL_male_node,
+                                                        NESname = 'AvgAct',
+                                                        PVname = NULL,
+                                                        genename = 'Node',
+                                                        x, 
+                                                        bg = CARNICAL_male_node$Node,
+                                                        pvcutoff = 0.05))
+
+names(malePathwayList) <- listnameora
+femalePathwayList <- apply(CHOICEora, 1, function(x) multiORA(geneset = CARNICAL_female_node,
+                                                        NESname = 'AvgAct',
+                                                        PVname = NULL,
+                                                        genename = 'Node',
+                                                        x, 
+                                                        bg = CARNICAL_male_node$Node,
+                                                        pvcutoff = 0.05))
+names(femalePathwayList) <- listnameora
+
+PathwayAll_df <- reorganisedf(femalePathwayList, malePathwayList)
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'GO',
+                      split = TRUE,
+                      top = 10,
+                      pcutoff = 0.05,
+                      wid = 1600,
+                      height = 800,
+                      filename = paste0("./results/limma+batch+age/CVD_vs_Control/carnivalGO_", filename,"_pcut0.05.jpg"))
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'pathway',
+                      split = TRUE,
+                      top = 10,
+                      pcutoff = 0.05,
+                      wid = 1500,
+                      height = 800,
+                      filename = paste0("./results/limma+batch+age/CVD_vs_Control/carnivalPathway_", filename,"_pcut0.05.jpg"))
+
+
+
+```
+
+
+
+
+
+```{r}
+tfs = unique(regulons$tf)
+tars = unique(regulons$target)
+
+
+
+i = 4
+carnival_result_ma=CARNIVAL_results_ALL[[2*i-1]]
+carnival_result_fe=CARNIVAL_results_ALL[[2*i]]
+filename = paste(CHOICE[2*i-1,2],CHOICE[2*i-1,3]) 
+
+
+carnivalDegree_ma <- getCARNIVALdegree(carnival_result_ma$weightedSIF)
+carnivalDegree_fe <- getCARNIVALdegree(carnival_result_fe$weightedSIF)
+carnivalDegree <- carnivalDegree_fe %>%
+  full_join(carnivalDegree_ma,by = "Node", suffix = c(".female", ".male"))
+
+
+carnivalnodes_all = carnival_result_fe$nodesAttributes %>%
+  inner_join(carnival_result_ma$nodesAttributes,by = "Node",
+             suffix = c(".female", ".male")) %>%
+  left_join(carnivalDegree, by = "Node" )
+
+dtfrm <- carnivalnodes_all %>%
+  mutate(diff= abs(AvgAct.female-AvgAct.male)) %>%
+  arrange(desc(diff)) %>%
+  # dplyr::select(Node, AvgAct.female, AvgAct.male, p.female, total_count.female, p.male, total_count.male) %>%
+  column_to_rownames('Node')
+
+dtfrm$TF <- NA
+dtfrm$TF[rownames(dtfrm) %in% tars] <- 'Target'
+dtfrm$TF[rownames(dtfrm) %in% tfs] <- 'TF'
+
+
+top = 100
+topdtfrm <- t(dtfrm[1:top,c("AvgAct.female","AvgAct.male")])
+topdegree <- dtfrm[1:top,c("total_count.female","total_count.male")]
+topdegree[is.na(topdegree)] <- 0
+
+topanno <-  dtfrm[1:top,c("NodeType.female","NodeType.male",'TF')]
+
+column_ha = HeatmapAnnotation( 
+                              male = topanno$NodeType.male,
+                              degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = "center"),
+                              female = topanno$NodeType.female,
+                              degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = "center"),
+                              TF = topanno$TF,
+                              col = list(male = c("T" = "pink",'S'='yellow'),
+                              female = c("T" = "pink",'S'='yellow'),
+                              TF = c("TF" = "pink", "Target" = "lightblue")),
+                              annotation_name_side = "left")
+
+pdfname <- paste0('./results/carnival_top',top,  filename,' heatmap.pdf')
+pdf(pdfname, width = 22, height = 5)
+ht_list = Heatmap(
+  topdtfrm,
+  top_annotation = column_ha,
+  width = unit(ncol(topdtfrm)/2.5, "cm"),
+  cluster_rows = FALSE,
+  heatmap_legend_param = list(title = 'Activity Score')
+)
+draw(
+  ht_list,
+  # heatmap_legend_side = "left",
+  heatmap_height = unit(nrow(topdtfrm)*3.5, "cm")
+                                )
+dev.off()
+
+
+```
+
+
+
+
+
+TOPology analysis of CARNIVAL
+```{r}
+# source('support_networks.r')
+# source('CARNIVALnetwork.R')
+# 
+# 
+# # get only summary files from CARNIVAL results
+# sifts = list(male = carnival_result_ma$weightedSIF,female = carnival_result_fe$weightedSIF)
+# nodos = list(male = carnival_result_ma$nodesAttributes,female = carnival_result_fe$nodesAttributes)
+# interactions = getTopology(networks = sifts, scafoldNET = sif)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+# source('CARNIVALnetwork.R')
+# 
+# # saveCarnival <- function(PathwayActivity_CARNIVALinput,tf_activities_carnival){
+# # carnival_result <- getCARNIVALresult(PathwayActivity_CARNIVALinput, tf_activities_carnival)
+# # visNet = carnival_visNet(evis = carnival_result$weightedSIF,
+# #                          nvis = carnival_result$nodesAttributes)
+# # visSave(visNet, file = paste0('./results/limma+batch+age/CVD_vs_Control/',name,'_Prog=',top,'_carnival_visNetwork496_',flagname,'.html'), selfcontained = TRUE)
+# # save(visNet, carnival_result, file = paste0('./results/limma+batch+age/CVD_vs_Control/',name,'_Prog=',top,'_carnival_visNetwork496_',flagname,'.RData'))
+# # }
+# 
+# # male carnival
+# name = "male"
+# PathwayActivity_CARNIVALinput = progenyScore %>%
+#   tibble::column_to_rownames(var = 'Pathway')%>%
+#   dplyr::select(male)
+# tf_activities_carnival <- TF_activity_all %>%
+#   tibble::column_to_rownames(var = 'TF')%>%
+#   filter(labels == 'Male specific TF') %>%
+#    dplyr::select(NES.male)
+# 
+# # saveCarnival(PathwayActivity_CARNIVALinput,tf_activities_carnival)
+# carnival_result <- getCARNIVALresult(PathwayActivity_CARNIVALinput, tf_activities_carnival)
+# visNet = carnival_visNet(evis = carnival_result$weightedSIF,
+#                          nvis = carnival_result$nodesAttributes)
+# visSave(visNet, file = paste0('./results/limma+batch+age/CVD_vs_Control/',name,'_Prog=',top,'_carnival_visNetwork496_',flagname,'.html'), selfcontained = TRUE)
+# 
+# 
+# save(visNet, carnival_result, file = paste0('./results/limma+batch+age/CVD_vs_Control/',name,'_Prog=',top,'_carnival_visNetwork496_',flagname,'.RData'))
+
+
+    
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TOPology analysis of CARNIVAL
+```{r}
+# source('support_networks.r')
+# source('CARNIVALnetwork.R')
+# 
+# load("./results/limma+batch+age/CVD_vs_Control/female_tfpv=0.1_logprogpv=6_carnival_result496.RData")
+# carnival_result_fe = carnival_result
+# load("./results/limma+batch+age/CVD_vs_Control/male_tfpv=0.1_logprogpv=6_carnival_result496.RData")
+# carnival_result_ma = carnival_result
+# 
+# sif = getSIF()
+# # get only summary files from CARNIVAL results
+# sifts = list(male = carnival_result_ma$weightedSIF,female = carnival_result_fe$weightedSIF)
+# nodos = list(male = carnival_result_ma$nodesAttributes,female = carnival_result_fe$nodesAttributes)
+# interactions = getTopology(networks = sifts, scafoldNET = sif)
+# 
+# carnivalDegree_ma <- getCARNIVALdegree(carnival_result_ma$weightedSIF)
+# carnivalDegree_fe <- getCARNIVALdegree(carnival_result_fe$weightedSIF)
+# carnivalDegree <- carnivalDegree_fe %>%
+#   full_join(carnivalDegree_ma,by = "Node", suffix = c(".female", ".male"))
+# 
+# 
+# carnivalnodes_all = carnival_result_fe$nodesAttributes %>%
+#   inner_join(carnival_result_ma$nodesAttributes,by = "Node",
+#              suffix = c(".female", ".male")) %>%
+#   left_join(carnivalDegree, by = "Node" )
+```
+
+
+
+
+
+```{r}
+# library(ggplot2)
+# library(ComplexHeatmap)
+# 
+# tfs = unique(regulons$tf)
+# tars = unique(regulons$target)
+# 
+# dtfrm <- carnivalnodes_all %>%
+#   mutate(diff= abs(AvgAct.female-AvgAct.male)) %>%
+#   arrange(desc(diff)) %>%
+#   # dplyr::select(Node, AvgAct.female, AvgAct.male, p.female, total_count.female, p.male, total_count.male) %>%
+#   column_to_rownames('Node')
+# 
+# dtfrm$TF <- NA
+# dtfrm$TF[rownames(dtfrm) %in% tars] <- 'Target'
+# dtfrm$TF[rownames(dtfrm) %in% tfs] <- 'TF'
+# 
+# 
+# top = 100
+# topdtfrm <- t(dtfrm[1:top,c("AvgAct.female","AvgAct.male")])
+# topdegree <- dtfrm[1:top,c("total_count.female","total_count.male")]
+# topdegree[is.na(topdegree)] <- 0
+# 
+# topanno <-  dtfrm[1:top,c("NodeType.female","NodeType.male",'TF')]
+# 
+# column_ha = HeatmapAnnotation( 
+#                               male = topanno$NodeType.male,
+#                               degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = "center"),
+#                               female = topanno$NodeType.female,
+#                               degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = "center"),
+#                               TF = topanno$TF,
+#                               col = list(male = c("T" = "pink", "S" = "yellow"),
+#                               female = c("T" = "pink", "S" = "yellow"),
+#                               TF = c("TF" = "pink", "Target" = "lightblue")),
+#                               annotation_name_side = "left")
+# pdfname <- paste0('./results/limma+batch+age/CVD_vs_Control/tfpv=0.1_logprogpv=6_carnival_top',top,' 496.pdf')
+# pdf(pdfname, width = 22, height = 5)
+# ht_list = Heatmap(
+#   topdtfrm,
+#   top_annotation = column_ha,
+#   width = unit(ncol(topdtfrm)/2.5, "cm"),
+#   cluster_rows = FALSE,
+#   heatmap_legend_param = list(title = 'Activity Score')
+# )
+# draw(
+#   ht_list,
+#   # heatmap_legend_side = "left",
+#   heatmap_height = unit(nrow(topdtfrm)*3.5, "cm")
+#                                 )
+# dev.off()
+
+
+```
+
+
+
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

@@ -1,0 +1,344 @@
+---
+title: "02_Pipeline_EA"
+author: "Chang Lu"
+date: "5/11/2020"
+output: github_document
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+
+## Introduction
+
+This is the pipeline is for Enrichment analysis (ORA and GSEA)
+
+```{r}
+library(ggplot2)
+library(tibble)
+library(tidyr)
+library(dplyr)
+library("xlsx")
+library(readr)
+library(ensembldb)
+library(EnsDb.Hsapiens.v86)
+library(tictoc)
+library(pracma)
+library(ggpubr)
+library(VennDiagram)
+source('./fun/multiORA.R')
+library (parallel)
+
+```
+
+
+# load data (the output of '01_Pipeline_DEA.Rmd') and change the gene from EntrezID to symbol
+```{r}
+load('./data/batch-limma-CVD-Control.RData')
+finalclin = clinforlimma
+finalgenemat = exprforlimma
+
+# cls_m <- finalclin$indication[finalclin$sex == 'male']
+# cls_f <- finalclin$indication[finalclin$sex == 'female']
+
+matched = match(rownames(finalgenemat), geneInfo$genes)
+IDXNA <- which(is.na(matched))
+geneid_na <- rownames(finalgenemat)[IDXNA]
+
+gene_hgnc <- geneInfo %>% dplyr::rename(SYMBOL = 'hgnc_symbol') %>% tibble::column_to_rownames(var = 'genes')
+geneexprs_hgnc <- finalgenemat   ## the reason why I got 2 different results
+
+GES_ma_HGNC <- male_DEG_limma
+matchidx = match(rownames(geneexprs_hgnc),rownames(male_DEG_limma))
+GES_ma_HGNC = GES_ma_HGNC[matchidx,]
+
+GES_fe_HGNC <- female_DEG_limma
+matchidx = match(rownames(geneexprs_hgnc),rownames(GES_fe_HGNC))
+GES_fe_HGNC = GES_fe_HGNC[matchidx,]
+
+GES_cvdmf_HGNC <- CVDMF_DEG_limma 
+matchidx = match(rownames(geneexprs_hgnc),rownames(GES_cvdmf_HGNC))
+GES_cvdmf_HGNC = GES_cvdmf_HGNC[matchidx,]  
+
+GES_healthmf_HGNC <- HealthMF_DEG_limma 
+matchidx = match(rownames(geneexprs_hgnc),rownames(GES_healthmf_HGNC))
+GES_healthmf_HGNC = GES_healthmf_HGNC[matchidx,]  
+
+
+# remove the duplicated genes based on the median of gene expression over all patients
+rownames(geneexprs_hgnc) <- gene_hgnc[rownames(finalgenemat),"SYMBOL"]
+a = rownames(geneexprs_hgnc)[duplicated(rownames(geneexprs_hgnc))]
+m = rowMedians(t(finalgenemat))
+for(x in unique(a)){
+      idx = which(rownames(geneexprs_hgnc) == x)
+      gid = rownames(finalgenemat)[idx] 
+  if(x == ""){
+      print(length(idx))
+      geneexprs_hgnc = geneexprs_hgnc[-idx,]
+      GES_fe_HGNC <- GES_fe_HGNC[-idx,]
+      GES_ma_HGNC <- GES_ma_HGNC[-idx,]
+      GES_cvdmf_HGNC <- GES_cvdmf_HGNC[-idx,]
+      GES_healthmf_HGNC <- GES_healthmf_HGNC[-idx,]     
+  }else{
+      d = proxy::dist(finalgenemat[gid,], pracma::repmat(m,length(idx),1),  pairwise = TRUE)
+      geneexprs_hgnc = geneexprs_hgnc[-idx[!(idx %in% idx[which.min(d)])],] 
+      GES_fe_HGNC <- GES_fe_HGNC[-idx[!(idx %in% idx[which.min(d)])],]
+      GES_ma_HGNC <- GES_ma_HGNC[-idx[!(idx %in% idx[which.min(d)])],]
+      GES_cvdmf_HGNC <- GES_cvdmf_HGNC[-idx[!(idx %in% idx[which.min(d)])],]
+      GES_healthmf_HGNC <- GES_healthmf_HGNC[-idx[!(idx %in% idx[which.min(d)])],]
+  }
+}
+
+# GES of male (CVD vs Control)
+GES_ma_HGNC$ID <- rownames(geneexprs_hgnc)
+GES_ma_HGNC <- GES_ma_HGNC[, c("ID", "logFC" , "AveExpr","t" , "P.Value","adj.P.Val","B")]
+GES_ma_mat <- GES_ma_HGNC$t %>% as.matrix()
+rownames(GES_ma_mat) <- GES_ma_HGNC$ID
+colnames(GES_ma_mat) <- 't'
+GES_ma_df <- GES_ma_HGNC[c('ID','t')] %>% 
+  dplyr::rename(GeneID = 'ID')
+
+# GES of female (CVD vs Control)
+GES_fe_HGNC$ID <- rownames(geneexprs_hgnc)
+GES_fe_HGNC <- GES_fe_HGNC[, c("ID", "logFC" , "AveExpr","t" , "P.Value","adj.P.Val","B")]
+GES_fe_mat <- GES_fe_HGNC$t %>% as.matrix()
+rownames(GES_fe_mat) <- GES_fe_HGNC$ID
+colnames(GES_fe_mat) <- 't'
+GES_fe_df <- GES_fe_HGNC[c('ID','t')] %>% 
+  dplyr::rename(GeneID = 'ID')
+
+# GES of CVD (male vs female)
+GES_cvdmf_HGNC$ID <- rownames(geneexprs_hgnc)
+GES_cvdmf_HGNC <- GES_cvdmf_HGNC[, c("ID", "logFC" , "AveExpr","t" , "P.Value","adj.P.Val","B")]
+GES_cvdmf_mat <- GES_cvdmf_HGNC$t %>% as.matrix()
+rownames(GES_cvdmf_mat) <- GES_fe_HGNC$ID
+colnames(GES_cvdmf_mat) <- 't'
+GES_cvdmf_df <- GES_cvdmf_HGNC[c('ID','t')] %>% 
+  dplyr::rename(GeneID = 'ID')
+
+# GES of Control (male vs female)
+GES_healthmf_HGNC$ID <- rownames(geneexprs_hgnc)
+GES_healthmf_HGNC <- GES_healthmf_HGNC[, c("ID", "logFC" , "AveExpr","t" , "P.Value","adj.P.Val","B")]
+GES_healthmf_mat <- GES_healthmf_HGNC$t %>% as.matrix()
+rownames(GES_healthmf_mat) <- GES_healthmf_HGNC$ID
+colnames(GES_healthmf_mat) <- 't'
+GES_healthmf_df <- GES_healthmf_HGNC[c('ID','t')] %>% 
+  dplyr::rename(GeneID = 'ID')
+
+# save.image(file = './data/myworkspacedata.RData')
+# # you can run previous chunk or just load the data below
+# load('./data/myworkspacedata.RData')
+
+
+
+clin_ma <- finalclin[finalclin$sex == 'male',]
+exprs_hgnc_ma <-  geneexprs_hgnc[,finalclin$sex == 'male']
+clin_fe <- finalclin[finalclin$sex == 'female',]
+exprs_hgnc_fe <-  geneexprs_hgnc[,finalclin$sex == 'female']
+
+
+save(geneexprs_hgnc, clin_ma, exprs_hgnc_ma, clin_fe, exprs_hgnc_fe, GES_ma_HGNC, GES_ma_mat, GES_ma_df, GES_fe_HGNC, GES_fe_mat, GES_fe_df, file = './data/GES_ma_fe.RData')
+
+
+```
+
+
+
+
+
+## boxplot of expressions of some genes (on CVD female, healthy female, CVD male,healthy male
+```{r}
+# batch correction
+mod = model.matrix(~indication, data=finalclin)
+finalclin$batch <- as.factor(finalclin$batch)
+bat = model.matrix(~0+batch, data=finalclin)
+# geneexprs_hgnc_BCL <- removeBatchEffect(geneexprs_hgnc, covariates= cbind(bat,finalclin$age),design= mod)
+geneexprs_hgnc_BCL <- removeBatchEffect(geneexprs_hgnc, batch = finalclin$batch, covariates=finalclin$age,design= mod)
+# geneexprs_hgnc_BCL.invlog <- 2^geneexprs_hgnc_BCL
+
+
+examplesymbol <- c('FOS','IL18')
+for(i in 1:length(examplesymbol)){
+# examples <- data.frame(geneexprs_hgnc_BCL.invlog[examplesymbol[i],]) %>% t()
+examples <- data.frame(geneexprs_hgnc_BCL[examplesymbol[i],]) %>% t()
+rownames(examples) <- examplesymbol[i]
+examples <- as.data.frame(examples)
+
+long_DF <- examples %>% rownames_to_column(var = "gene") %>% gather(sampleid, intensity,colnames(examples)[1]:colnames(examples)[ncol(examples)])
+examples[nrow(examples)+1,] <- paste(finalclin$indication,finalclin$sex)
+rownames(examples)[nrow(examples)] <- 'category'
+examples <- as.data.frame(t(examples)) 
+long_DF$category[long_DF$sampleid %in% rownames(examples)[examples$category %in% "healthy control female" ]]   <- "healthy\n female"
+long_DF$category[long_DF$sampleid %in% rownames(examples)[examples$category %in% "healthy control male" ]]   <- "healthy\n male" 
+long_DF$category[long_DF$sampleid %in% rownames(examples)[examples$category %in% "CVD female" ]]   <- "CVD\n female"
+long_DF$category[long_DF$sampleid %in% rownames(examples)[examples$category %in% "CVD male" ]]   <- "CVD\n male"
+long_DF$category<-factor(long_DF$category, levels=c("CVD\n female", "healthy\n female",  "CVD\n male","healthy\n male" ))
+long_DF$age  <- finalclin$age
+long_DF$batch  <- finalclin$batch2
+
+my_comparisons = list( c("CVD\n female", "healthy\n female"), c("CVD\n male","healthy\n male"))
+p <- ggbarplot(long_DF, x = "category", y = "intensity", color = 'category',
+          add = c("mean_se",'jitter'),
+          xlab = long_DF$gene[1],
+          palette = "jco",
+          add.params = list(size = 1),
+          width = 0.5,
+          title = examplesymbol[i],
+          legend = "right",
+          ylim = quantile(long_DF$intensity, c(0.05, 0.997))
+          # ylim = c(quantile(long_DF$intensity, 0.05),400)
+          )
+# +geom_jitter()+scale_colour_gradient(low = "#000000",high = "#FF0000",space = "Lab")
+  
+jpeg( paste0('./results/barplot',examplesymbol[i],'.jpg'),  width = 800, height = 1000, res = 200)
+print(
+  p + stat_compare_means(comparisons = my_comparisons,
+                       tip.length = 0.01,
+                       # label= "p.signif",
+                       label.y = quantile(long_DF$intensity, c(0.99, 0.99)),
+                       paired = FALSE)
+  )
+dev.off()
+
+
+}
+
+
+
+# ggscatter(long_DF, x = "age", y = "intensity",color = 'batch',title = examplesymbol[i], palette = "jco", add = "reg.line", conf.int = TRUE) + stat_cor(aes(color = batch), label.x = 3)
+
+
+
+
+
+```
+
+
+
+
+
+
+
+# ORA based on PIANO
+```{r}
+CHOICE = expand.grid(reg = c('up','dn'),
+                     database = c('pathway','GO'))
+CHOICE = sapply(CHOICE,as.character)
+listname <- apply(CHOICE, 1 , function(x) paste(x, collapse = "_"))
+
+
+cl <- makeCluster (4)
+clusterEvalQ(cl, source('./fun/multiORA.R'))
+clusterExport(cl, list("GES_ma_HGNC","GES_fe_HGNC"))
+maleORAList <- parApply (cl, X = CHOICE, MARGIN = 1, FUN = function(x) multiORA(geneset = GES_ma_HGNC,
+                                                        NESname = 't',
+                                                        PVname = 'adj.P.Val',
+                                                        genename = 'ID',
+                                                        x, 
+                                                        bg = GES_ma_HGNC$ID,
+                                                        pvcutoff = 1))
+names(maleORAList) <- listname
+
+femaleORAList <- parApply(cl, X = CHOICE, MARGIN = 1, FUN = function(x) multiORA(geneset = GES_fe_HGNC,
+                                                           NESname = 't',
+                                                           PVname = 'adj.P.Val',
+                                                           genename = 'ID',
+                                                           x, 
+                                                           bg = GES_fe_HGNC$ID,
+                                                           pvcutoff = 1))
+names(femaleORAList) <- listname
+stopCluster(cl)
+
+
+
+# maleORAList <- apply(CHOICE, 1, function(x) multiORA(geneset = GES_ma_HGNC,
+#                                                         NESname = 't',
+#                                                         PVname = 'adj.P.Val',
+#                                                         genename = 'ID',
+#                                                         cases = x,
+#                                                         bg = GES_ma_HGNC$ID,
+#                                                         pvcutoff = 1))
+# 
+# names(maleORAList) <- listname
+# femaleORAList <- apply(CHOICE, 1, function(x) multiORA(geneset = GES_fe_HGNC,
+#                                                            NESname = 't',
+#                                                            PVname = 'adj.P.Val',
+#                                                            genename = 'ID',
+#                                                            x, 
+#                                                            bg = GES_fe_HGNC$ID,
+#                                                            pvcutoff = 1))
+# names(femaleORAList) <- listname
+
+
+# Combine males and females results
+PathwayLIST=list(maleORAList, femaleORAList)
+names(PathwayLIST) = c('Male','Female')
+PathwayAll_df <- reorganisedf(PathwayLIST)
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'GO',
+                      split = FALSE,
+                      top = 10,
+                      pcutoff = 1,
+                      filename = "./results/ORAGO.jpg")
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'pathway',
+                      split = TRUE,
+                      top = 10,
+                      wid = 2400,
+                      pcutoff = 1,
+                      filename = "./results/ORApathway.jpg")
+```
+
+
+
+# GSEA based on Clusterprofile
+```{r}
+source('./fun/GSEA_basedon_CP.R')
+source('./fun/multiORA.R')
+
+
+dfforplot_ma <- getdfforplot(GES_df=GES_ma_df,
+                             pvalueCutoff = 1,
+                             ifsim = FALSE)
+dfforplot_fe <- getdfforplot(GES_df=GES_fe_df,
+                             pvalueCutoff = 1,
+                             ifsim = FALSE)
+
+
+PathwayAll_df <- reorganClusterProfile(femalePathwayList = dfforplot_fe, 
+                                       malePathwayList = dfforplot_ma)
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'GO',
+                      split = TRUE,
+                      top = 10,
+                      wid = 1500,
+                      height = 1000,
+                      pcutoff = 0.05,
+                      break_by = 4,
+                      filename = "./results/GSEAGOtop10.jpg")
+
+showCompEnrichDotplot(PathwayAll_df,
+                      pathwayname = 'pathway',
+                      split = TRUE,
+                      top = 10,
+                      wid = 1500,
+                      pcutoff = 0.05,
+                      break_by = 4,
+                      filename = "./results/GSEApathwaytop10.jpg")
+
+
+
+```
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
