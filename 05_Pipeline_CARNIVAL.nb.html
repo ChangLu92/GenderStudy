@@ -217,15 +217,32 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShDQVJOSVZBTClcbmxpYnJhcnkoT21uaXBhdGhSKVxuc291cmNlKCcuL2Z1bi9DQVJOSVZBTF9mdW5jdGlvbnMuUicpXG5saWJyYXJ5KHByb2dlbnkpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KENvbXBsZXhIZWF0bWFwKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShDQVJOSVZBTClcbmxpYnJhcnkoT21uaXBhdGhSKVxuc291cmNlKCcuL2Z1bi9DQVJOSVZBTF9mdW5jdGlvbnMuUicpXG5saWJyYXJ5KHByb2dlbnkpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KENvbXBsZXhIZWF0bWFwKVxuYGBgIn0= -->
 <pre class="r"><code>library(CARNIVAL)
 library(OmnipathR)
 source(&#39;./fun/CARNIVAL_functions.R&#39;)
 library(progeny)
 library(ggplot2)
-library(ComplexHeatmap)
-</code></pre>
+library(ComplexHeatmap)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuQ29tcGxleEhlYXRtYXAgdmVyc2lvbiAyLjguMFxuQmlvY29uZHVjdG9yIHBhZ2U6IGh0dHA6Ly9iaW9jb25kdWN0b3Iub3JnL3BhY2thZ2VzL0NvbXBsZXhIZWF0bWFwL1xuR2l0aHViIHBhZ2U6IGh0dHBzOi8vZ2l0aHViLmNvbS9qb2tlcmdvby9Db21wbGV4SGVhdG1hcFxuRG9jdW1lbnRhdGlvbjogaHR0cDovL2pva2VyZ29vLmdpdGh1Yi5pby9Db21wbGV4SGVhdG1hcC1yZWZlcmVuY2VcblxuSWYgeW91IHVzZSBpdCBpbiBwdWJsaXNoZWQgcmVzZWFyY2gsIHBsZWFzZSBjaXRlOlxuR3UsIFouIENvbXBsZXggaGVhdG1hcHMgcmV2ZWFsIHBhdHRlcm5zIGFuZCBjb3JyZWxhdGlvbnMgaW4gbXVsdGlkaW1lbnNpb25hbCBcbiAgZ2Vub21pYyBkYXRhLiBCaW9pbmZvcm1hdGljcyAyMDE2LlxuXG5UaGUgbmV3IEludGVyYWN0aXZlQ29tcGxleEhlYXRtYXAgcGFja2FnZSBjYW4gZGlyZWN0bHkgZXhwb3J0IHN0YXRpYyBcbmNvbXBsZXggaGVhdG1hcHMgaW50byBhbiBpbnRlcmFjdGl2ZSBTaGlueSBhcHAgd2l0aCB6ZXJvIGVmZm9ydC4gSGF2ZSBhIHRyeSFcblxuVGhpcyBtZXNzYWdlIGNhbiBiZSBzdXBwcmVzc2VkIGJ5OlxuICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMobGlicmFyeShDb21wbGV4SGVhdG1hcCkpXG49PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4ifQ== -->
+<pre><code>========================================
+ComplexHeatmap version 2.8.0
+Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
+Github page: https://github.com/jokergoo/ComplexHeatmap
+Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
+
+If you use it in published research, please cite:
+Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
+  genomic data. Bioinformatics 2016.
+
+The new InteractiveComplexHeatmap package can directly export static 
+complex heatmaps into an interactive Shiny app with zero effort. Have a try!
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(ComplexHeatmap))
+========================================</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="run-carnival" class="section level1">
@@ -236,49 +253,35 @@ library(ComplexHeatmap)
 <pre class="r"><code>CARNIVAL_results_ALL = apply(CHOICE, 1, function(x) CARNIVAL_Pipeline(x, idx,sif))
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQ2FsbGVkIGZyb206IGV2YWwoZXhwciwgcClcbiJ9 -->
-<pre><code>Called from: eval(expr, p)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxublxuYGBgIn0= -->
-<pre class="r"><code>n</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiZGVidWcgYXQgLi9mdW4vQ0FSTklWQUxfZnVuY3Rpb25zLlIjNTA6IGNhcm5pdmFsX3Jlc3VsdCA9IHJ1bkNBUk5JVkFMKGlucHV0T2JqID0gaW5pY2lhdG9ycywgbWVhc09iaiA9IHRmTGlzdCwgXG4gICAgbmV0T2JqID0gc2lmLCB3ZWlnaHRPYmogPSBhcy5tYXRyaXgocHJvZ2VueWxpc3RbWzFdXSksIHNvbHZlclBhdGggPSBcIkQ6L05ld2ZvbGRlci9JQk0vTE9HL0NQTEVYX1N0dWRpbzIwMS9jcGxleC9iaW4veDY0X3dpbjY0L2NwbGV4LmV4ZVwiLCBcbiAgICBzb2x2ZXIgPSBcImNwbGV4XCIsIGtlZXBMUEZpbGVzID0gRkFMU0UpXG4ifQ== -->
-<pre><code>debug at ./fun/CARNIVAL_functions.R#50: carnival_result = runCARNIVAL(inputObj = iniciators, measObj = tfList, 
-    netObj = sif, weightObj = as.matrix(progenylist[[1]]), solverPath = &quot;D:/Newfolder/IBM/LOG/CPLEX_Studio201/cplex/bin/x64_win64/cplex.exe&quot;, 
-    solver = &quot;cplex&quot;, keepLPFiles = FALSE)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxublxuYGBgIn0= -->
-<pre class="r"><code>n</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLS0tIFN0YXJ0IG9mIHRoZSBDQVJOSVZBTCBwaXBlbGluZSAtLS1cbjEzOjE3OjIwIDExLjEwLjIwMjEgQ2Fybml2YWwgZmxhdm91cjogdmFuaWxsYVxuV2FybmluZyBpbiBjaGVja01lYXN1cmVtZW50cyhtZWFzdXJlbWVudHMsIG5vZGVzUHJpb3JLbm93bGVkZ2VOZXR3b3JrKSA6XG4gIFRoZXNlIG5vZGVzIGFyZSBub3QgaW4gcHJpb3Iga25vd2xlZGdlIG5ldHdvcmsgYW5kIHdpbGwgYmUgaWdub3JlZDogQ1RDRkxHUkhMMlxuV2FybmluZyBpbiBjaGVja1dlaWdodHMod2VpZ2h0cywgbm9kZXNQcmlvcktub3dsZWRnZU5ldHdvcmspIDpcbiAgVGhlc2Ugbm9kZXMgYXJlIG5vdCBpbiBwcmlvciBrbm93bGVkZ2UgbmV0d29yayBhbmQgd2lsbCBiZSBpZ25vcmVkOiBOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFcbjEzOjE3OjIxIDExLjEwLjIwMjEgR2VuZXJhdGluZyB2YXJpYWJsZXMgZm9yIGxwIHByb2JsZW1cbjEzOjE3OjIxIDExLjEwLjIwMjEgRG9uZTogZ2VuZXJhdGluZyB2YXJpYWJsZXMgZm9yIGxwIHByb2JsZW1cblNhdmluZyBwcmVwcm9jZXNzZWQgZGF0YS5cbkRvbmU6IHNhdmluZyBwYXJzZWQgZGF0YTogRzovQ1RNTS9DVE1NIGJ5IENoYW5nL2NvZGVzL0dlbmRlciBTdHVkeSBDTC9wYXJzZWREYXRhX3QxM18xN18yMWQxMV8xMF8yMDIxbjIxLlJEYXRhXG4xMzoxNzoyMSAxMS4xMC4yMDIxIEdlbmVyYXRpbmcgZm9ybXVsYXRpb24gZm9yIExQIHByb2JsZW1cbjEzOjE3OjI5IDExLjEwLjIwMjEgRG9uZTogZ2VuZXJhdGluZyBmb3JtdWxhdGlvbiBmb3IgTFAgcHJvYmxlbS5cblNhdmluZyBMUCBmaWxlXG5Eb25lOiBTYXZpbmcgTFAgZmlsZTogRzovQ1RNTS9DVE1NIGJ5IENoYW5nL2NvZGVzL0dlbmRlciBTdHVkeSBDTC9scEZpbGVfdDEzXzE3XzIxZDExXzEwXzIwMjFuMjEubHBcbjEzOjE3OjMzIDExLjEwLjIwMjEgU29sdmluZyBMUCBwcm9ibGVtXG5Xcml0aW5nIGNwbGV4IGNvbW1hbmQgZmlsZVxuRG9uZTogd3JpdGluZyBjcGxleCBjb21tYW5kIGZpbGVcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiLS0tIFN0YXJ0IG9mIHRoZSBDQVJOSVZBTCBwaXBlbGluZSAtLS1cbjE0OjQwOjIwIDExLjEwLjIwMjEgQ2Fybml2YWwgZmxhdm91cjogdmFuaWxsYVxuV2FybmluZyBpbiBjaGVja01lYXN1cmVtZW50cyhtZWFzdXJlbWVudHMsIG5vZGVzUHJpb3JLbm93bGVkZ2VOZXR3b3JrKSA6XG4gIFRoZXNlIG5vZGVzIGFyZSBub3QgaW4gcHJpb3Iga25vd2xlZGdlIG5ldHdvcmsgYW5kIHdpbGwgYmUgaWdub3JlZDogQ1RDRkxHUkhMMlxuV2FybmluZyBpbiBjaGVja1dlaWdodHMod2VpZ2h0cywgbm9kZXNQcmlvcktub3dsZWRnZU5ldHdvcmspIDpcbiAgVGhlc2Ugbm9kZXMgYXJlIG5vdCBpbiBwcmlvciBrbm93bGVkZ2UgbmV0d29yayBhbmQgd2lsbCBiZSBpZ25vcmVkOiBOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFOQU5BTkFcbjE0OjQwOjIwIDExLjEwLjIwMjEgR2VuZXJhdGluZyB2YXJpYWJsZXMgZm9yIGxwIHByb2JsZW1cbjE0OjQwOjIwIDExLjEwLjIwMjEgRG9uZTogZ2VuZXJhdGluZyB2YXJpYWJsZXMgZm9yIGxwIHByb2JsZW1cblNhdmluZyBwcmVwcm9jZXNzZWQgZGF0YS5cbkRvbmU6IHNhdmluZyBwYXJzZWQgZGF0YTogRTovR2l0SHViL0dlbmRlclN0dWR5L3BhcnNlZERhdGFfdDE0XzQwXzIwZDExXzEwXzIwMjFuODkuUkRhdGFcbjE0OjQwOjIwIDExLjEwLjIwMjEgR2VuZXJhdGluZyBmb3JtdWxhdGlvbiBmb3IgTFAgcHJvYmxlbVxuMTQ6NDA6MzAgMTEuMTAuMjAyMSBEb25lOiBnZW5lcmF0aW5nIGZvcm11bGF0aW9uIGZvciBMUCBwcm9ibGVtLlxuU2F2aW5nIExQIGZpbGVcbkRvbmU6IFNhdmluZyBMUCBmaWxlOiBFOi9HaXRIdWIvR2VuZGVyU3R1ZHkvbHBGaWxlX3QxNF80MF8yMGQxMV8xMF8yMDIxbjg5LmxwXG4xNDo0MDozNCAxMS4xMC4yMDIxIFNvbHZpbmcgTFAgcHJvYmxlbVxuV3JpdGluZyBjcGxleCBjb21tYW5kIGZpbGVcbkRvbmU6IHdyaXRpbmcgY3BsZXggY29tbWFuZCBmaWxlXG4ifQ== -->
 <pre><code>--- Start of the CARNIVAL pipeline ---
-13:17:20 11.10.2021 Carnival flavour: vanilla
+14:40:20 11.10.2021 Carnival flavour: vanilla
 Warning in checkMeasurements(measurements, nodesPriorKnowledgeNetwork) :
   These nodes are not in prior knowledge network and will be ignored: CTCFLGRHL2
 Warning in checkWeights(weights, nodesPriorKnowledgeNetwork) :
   These nodes are not in prior knowledge network and will be ignored: NANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANANA
-13:17:21 11.10.2021 Generating variables for lp problem
-13:17:21 11.10.2021 Done: generating variables for lp problem
+14:40:20 11.10.2021 Generating variables for lp problem
+14:40:20 11.10.2021 Done: generating variables for lp problem
 Saving preprocessed data.
-Done: saving parsed data: G:/CTMM/CTMM by Chang/codes/Gender Study CL/parsedData_t13_17_21d11_10_2021n21.RData
-13:17:21 11.10.2021 Generating formulation for LP problem
-13:17:29 11.10.2021 Done: generating formulation for LP problem.
+Done: saving parsed data: E:/GitHub/GenderStudy/parsedData_t14_40_20d11_10_2021n89.RData
+14:40:20 11.10.2021 Generating formulation for LP problem
+14:40:30 11.10.2021 Done: generating formulation for LP problem.
 Saving LP file
-Done: Saving LP file: G:/CTMM/CTMM by Chang/codes/Gender Study CL/lpFile_t13_17_21d11_10_2021n21.lp
-13:17:33 11.10.2021 Solving LP problem
+Done: Saving LP file: E:/GitHub/GenderStudy/lpFile_t14_40_20d11_10_2021n89.lp
+14:40:34 11.10.2021 Solving LP problem
 Writing cplex command file
 Done: writing cplex command file</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5JbmNvcnJlY3QgdXNhZ2UuIENvcnJlY3QgY29tbWFuZCBzeW50YXggaXM6XG4gICBHOlxcQ1RNTVxcQ1RNTSBieSBDaGFuZ1xcY29kZXNcXEdlbmRlciBTdHVkeSBDTFxcY3BsZXguZXhlIFstaV0gWy1mIDxjb21tYW5kZmlsZT4gfCAtYyBcIjxjb21tYW5kMT5cIiBcIjxjb21tYW5kMj5cIiAuLi5dXG5FeGl0aW5nXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5JbmNvcnJlY3QgdXNhZ2UuIENvcnJlY3QgY29tbWFuZCBzeW50YXggaXM6XG4gICBFOlxcR2l0SHViXFxHRU5ERVJ+MVxcY3BsZXguZXhlIFstaV0gWy1mIDxjb21tYW5kZmlsZT4gfCAtYyBcIjxjb21tYW5kMT5cIiBcIjxjb21tYW5kMj5cIiAuLi5dXG5FeGl0aW5nXG4ifQ== -->
 <pre><code>
 Incorrect usage. Correct command syntax is:
-   G:\CTMM\CTMM by Chang\codes\Gender Study CL\cplex.exe [-i] [-f &lt;commandfile&gt; | -c &quot;&lt;command1&gt;&quot; &quot;&lt;command2&gt;&quot; ...]
+   E:\GitHub\GENDER~1\cplex.exe [-i] [-f &lt;commandfile&gt; | -c &quot;&lt;command1&gt;&quot; &quot;&lt;command2&gt;&quot; ...]
 Exiting</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2F2aW5nIHJlc3VsdHMuLi5cbldhcm5pbmcgaW4gZmlsZShmaWxlLCBcInJ0XCIpIDpcbiAgY2Fubm90IG9wZW4gZmlsZSAnRzovQ1RNTS9DVE1NIGJ5IENoYW5nL2NvZGVzL0dlbmRlciBTdHVkeSBDTC9yZXN1bHRfdDEzXzE3XzIxZDExXzEwXzIwMjFuMjEudHh0JzogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeVxuRXJyb3IgaW4gZmlsZShmaWxlLCBcInJ0XCIpIDogY2Fubm90IG9wZW4gdGhlIGNvbm5lY3Rpb25cbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2F2aW5nIHJlc3VsdHMuLi5cbldhcm5pbmcgaW4gZmlsZShmaWxlLCBcInJ0XCIpIDpcbiAgY2Fubm90IG9wZW4gZmlsZSAnRTovR2l0SHViL0dlbmRlclN0dWR5L3Jlc3VsdF90MTRfNDBfMjBkMTFfMTBfMjAyMW44OS50eHQnOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5XG5FcnJvciBpbiBmaWxlKGZpbGUsIFwicnRcIikgOiBjYW5ub3Qgb3BlbiB0aGUgY29ubmVjdGlvblxuIn0= -->
 <pre><code>Saving results...
 Warning in file(file, &quot;rt&quot;) :
-  cannot open file &#39;G:/CTMM/CTMM by Chang/codes/Gender Study CL/result_t13_17_21d11_10_2021n21.txt&#39;: No such file or directory
+  cannot open file &#39;E:/GitHub/GenderStudy/result_t14_40_20d11_10_2021n89.txt&#39;: No such file or directory
 Error in file(file, &quot;rt&quot;) : cannot open the connection</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -288,8 +291,9 @@ Error in file(file, &quot;rt&quot;) : cannot open the connection</code></pre>
 <h1>draw carnival network on cytoscape</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3R5bGUubmFtZSA9IFwiQ0wxXCJcbmN5dG9wYXRoID0gJy4vcmVzdWx0cy8nXG5cbmkgPSA3XG5jYXJuaXZhbF9yZXN1bHQgPSBDQVJOSVZBTF9yZXN1bHRzX0FMTFtbaV1dXG5maWxlbmFtZSA9IG5hbWVzKENBUk5JVkFMX3Jlc3VsdHNfQUxMKVtpXVxuZHJhd19DWVRPU0NBUEVfQ0FSTklWQUwoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiAgICAgICAgICAgICAgICAgICAgICAgIG52aXMgPSBjYXJuaXZhbF9yZXN1bHQkbm9kZXNBdHRyaWJ1dGVzLFxuICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGUubmFtZSA9IHN0eWxlLm5hbWUsXG4gICAgICAgICAgICAgICAgICAgICAgICB0aXRsZSA9IGZpbGVuYW1lKVxuXG5cbnNhdmVTZXNzaW9uKHBhc3RlMChjeXRvcGF0aCxmaWxlbmFtZSkpICMuY3lzXG5leHBvcnRJbWFnZShwYXN0ZTAoY3l0b3BhdGgsZmlsZW5hbWUpLCAnUE5HJywgem9vbT0yMDApICMucG5nIHNjYWxlZCBieSAyMDAlXG4jIGV4cG9ydEltYWdlKGZ1bGwucGF0aCwgJ1BERicpICMucGRmXG5cblxuYXR0cmliIDwtIGNhcm5pdmFsX3Jlc3VsdCRhdHRyaWJ1dGVzQWxsXG5zaWZhbGwgPC0gY2Fybml2YWxfcmVzdWx0JHNpZkFsbFxuXG5zaWduID0gbGlzdCgpXG5lZGdlcyA9IGxpc3QoKVxuZm9yIChpIGluIDE6MTAwKSB7XG4gIHggPSBhdHRyaWJbW2ldXVxuICB5ID0gc2lmYWxsW1tpXV1cbiAgaWYoYW55KHhbLDFdICVpbiUgJ1JVTlgyJykpeyBcbiAgICBzaWduW1tpXV0gPSB4W3hbLDFdICVpbiUgJ1JVTlgyJywgMl1cbiAgICBlZGdlc1tbaV1dID0geVt5WywzXSAlaW4lICdSVU5YMicsXVxufSBcbn1cblxuYGBgIn0= -->
-<pre class="r"><code>style.name = &quot;CL1&quot;
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3R5bGUubmFtZSA9IFxcQ0wxXFxcbmN5dG9wYXRoID0gJy4vcmVzdWx0cy8nXG5cbmkgPSA3XG5jYXJuaXZhbF9yZXN1bHQgPSBDQVJOSVZBTF9yZXN1bHRzX0FMTFtbaV1dXG5maWxlbmFtZSA9IG5hbWVzKENBUk5JVkFMX3Jlc3VsdHNfQUxMKVtpXVxuZHJhd19DWVRPU0NBUEVfQ0FSTklWQUwoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiAgICAgICAgICAgICAgICAgICAgICAgIG52aXMgPSBjYXJuaXZhbF9yZXN1bHQkbm9kZXNBdHRyaWJ1dGVzLFxuICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGUubmFtZSA9IHN0eWxlLm5hbWUsXG4gICAgICAgICAgICAgICAgICAgICAgICB0aXRsZSA9IGZpbGVuYW1lKVxuXG5cbnNhdmVTZXNzaW9uKHBhc3RlMChjeXRvcGF0aCxmaWxlbmFtZSkpICMuY3lzXG5leHBvcnRJbWFnZShwYXN0ZTAoY3l0b3BhdGgsZmlsZW5hbWUpLCAnUE5HJywgem9vbT0yMDApICMucG5nIHNjYWxlZCBieSAyMDAlXG4jIGV4cG9ydEltYWdlKGZ1bGwucGF0aCwgJ1BERicpICMucGRmXG5cblxuYXR0cmliIDwtIGNhcm5pdmFsX3Jlc3VsdCRhdHRyaWJ1dGVzQWxsXG5zaWZhbGwgPC0gY2Fybml2YWxfcmVzdWx0JHNpZkFsbFxuXG5zaWduID0gbGlzdCgpXG5lZGdlcyA9IGxpc3QoKVxuZm9yIChpIGluIDE6MTAwKSB7XG4gIHggPSBhdHRyaWJbW2ldXVxuICB5ID0gc2lmYWxsW1tpXV1cbiAgaWYoYW55KHhbLDFdICVpbiUgJ1JVTlgyJykpeyBcbiAgICBzaWduW1tpXV0gPSB4W3hbLDFdICVpbiUgJ1JVTlgyJywgMl1cbiAgICBlZGdlc1tbaV1dID0geVt5WywzXSAlaW4lICdSVU5YMicsXVxufSBcbn1cblxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+style.name = \CL1\
 cytopath = &#39;./results/&#39;
 
 i = 7
@@ -320,14 +324,30 @@ for (i in 1:100) {
 } 
 }
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>#ORA</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ0hPSUNFID0gZXhwYW5kLmdyaWQoc2V4ID0gYygnbWFsZScsJ2ZlbWFsZScpLFxuICAgICAgICAgICAgICAgICAgICAgcCA9IGMoJ25vcm1hbCcsJ3JlbW9fdW5zdGFibGUnKSxcbiAgICAgICAgICAgICAgICAgICAgIHBlcm0gPSBjKCdHZW5lUGVybScsJ3NhbXBsZVBlcm0nKSlcblxuaT00XG5DQVJOSUNBTF9tYWxlX25vZGUgPSBDQVJOSVZBTF9yZXN1bHRzX0FMTFtbMippLTFdXSRub2Rlc0F0dHJpYnV0ZXNcbkNBUk5JQ0FMX2ZlbWFsZV9ub2RlID0gQ0FSTklWQUxfcmVzdWx0c19BTExbWzIqaV1dJG5vZGVzQXR0cmlidXRlc1xuZmlsZW5hbWUgPSBwYXN0ZShDSE9JQ0VbMippLTEsMl0sQ0hPSUNFWzIqaS0xLDNdKSBcblxuXG5cblxuXG5DSE9JQ0VvcmEgPSBleHBhbmQuZ3JpZChyZWcgPSBjKCd1cCcsJ2RuJyksXG4gICAgICAgICAgICAgICAgICAgICBkYXRhYmFzZSA9IGMoJ3BhdGh3YXknLCdHTycpKVxuQ0hPSUNFb3JhID0gc2FwcGx5KENIT0lDRW9yYSxhcy5jaGFyYWN0ZXIpXG5saXN0bmFtZW9yYSA8LSBhcHBseShDSE9JQ0VvcmEsIDEgLCBmdW5jdGlvbih4KSBwYXN0ZSh4LCBjb2xsYXBzZSA9IFwiX1wiKSlcblxuXG5tYWxlUGF0aHdheUxpc3QgPC0gYXBwbHkoQ0hPSUNFb3JhLCAxLCBmdW5jdGlvbih4KSBtdWx0aU9SQShnZW5lc2V0ID0gQ0FSTklDQUxfbWFsZV9ub2RlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBORVNuYW1lID0gJ0F2Z0FjdCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFBWbmFtZSA9IE5VTEwsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdlbmVuYW1lID0gJ05vZGUnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmcgPSBDQVJOSUNBTF9tYWxlX25vZGUkTm9kZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHZjdXRvZmYgPSAwLjA1KSlcblxubmFtZXMobWFsZVBhdGh3YXlMaXN0KSA8LSBsaXN0bmFtZW9yYVxuZmVtYWxlUGF0aHdheUxpc3QgPC0gYXBwbHkoQ0hPSUNFb3JhLCAxLCBmdW5jdGlvbih4KSBtdWx0aU9SQShnZW5lc2V0ID0gQ0FSTklDQUxfZmVtYWxlX25vZGUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5FU25hbWUgPSAnQXZnQWN0JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUFZuYW1lID0gTlVMTCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ2VuZW5hbWUgPSAnTm9kZScsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHgsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiZyA9IENBUk5JQ0FMX21hbGVfbm9kZSROb2RlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwdmN1dG9mZiA9IDAuMDUpKVxubmFtZXMoZmVtYWxlUGF0aHdheUxpc3QpIDwtIGxpc3RuYW1lb3JhXG5cblBhdGh3YXlBbGxfZGYgPC0gcmVvcmdhbmlzZWRmKGZlbWFsZVBhdGh3YXlMaXN0LCBtYWxlUGF0aHdheUxpc3QpXG5zaG93Q29tcEVucmljaERvdHBsb3QoUGF0aHdheUFsbF9kZixcbiAgICAgICAgICAgICAgICAgICAgICBwYXRod2F5bmFtZSA9ICdHTycsXG4gICAgICAgICAgICAgICAgICAgICAgc3BsaXQgPSBUUlVFLFxuICAgICAgICAgICAgICAgICAgICAgIHRvcCA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgIHBjdXRvZmYgPSAwLjA1LFxuICAgICAgICAgICAgICAgICAgICAgIHdpZCA9IDE2MDAsXG4gICAgICAgICAgICAgICAgICAgICAgaGVpZ2h0ID0gODAwLFxuICAgICAgICAgICAgICAgICAgICAgIGZpbGVuYW1lID0gcGFzdGUwKFwiLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC9jYXJuaXZhbEdPX1wiLCBmaWxlbmFtZSxcIl9wY3V0MC4wNS5qcGdcIikpXG5cbnNob3dDb21wRW5yaWNoRG90cGxvdChQYXRod2F5QWxsX2RmLFxuICAgICAgICAgICAgICAgICAgICAgIHBhdGh3YXluYW1lID0gJ3BhdGh3YXknLFxuICAgICAgICAgICAgICAgICAgICAgIHNwbGl0ID0gVFJVRSxcbiAgICAgICAgICAgICAgICAgICAgICB0b3AgPSAxMCxcbiAgICAgICAgICAgICAgICAgICAgICBwY3V0b2ZmID0gMC4wNSxcbiAgICAgICAgICAgICAgICAgICAgICB3aWQgPSAxNTAwLFxuICAgICAgICAgICAgICAgICAgICAgIGhlaWdodCA9IDgwMCxcbiAgICAgICAgICAgICAgICAgICAgICBmaWxlbmFtZSA9IHBhc3RlMChcIi4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvY2Fybml2YWxQYXRod2F5X1wiLCBmaWxlbmFtZSxcIl9wY3V0MC4wNS5qcGdcIikpXG5cblxuXG5gYGAifQ== -->
-<pre class="r"><code>CHOICE = expand.grid(sex = c(&#39;male&#39;,&#39;female&#39;),
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+#ORA
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuQ0hPSUNFID0gZXhwYW5kLmdyaWQoc2V4ID0gYygnbWFsZScsJ2ZlbWFsZScpLFxuICAgICAgICAgICAgICAgICAgICAgcCA9IGMoJ25vcm1hbCcsJ3JlbW9fdW5zdGFibGUnKSxcbiAgICAgICAgICAgICAgICAgICAgIHBlcm0gPSBjKCdHZW5lUGVybScsJ3NhbXBsZVBlcm0nKSlcblxuaT00XG5DQVJOSUNBTF9tYWxlX25vZGUgPSBDQVJOSVZBTF9yZXN1bHRzX0FMTFtbMippLTFdXSRub2Rlc0F0dHJpYnV0ZXNcbkNBUk5JQ0FMX2ZlbWFsZV9ub2RlID0gQ0FSTklWQUxfcmVzdWx0c19BTExbWzIqaV1dJG5vZGVzQXR0cmlidXRlc1xuZmlsZW5hbWUgPSBwYXN0ZShDSE9JQ0VbMippLTEsMl0sQ0hPSUNFWzIqaS0xLDNdKSBcblxuXG5cblxuXG5DSE9JQ0VvcmEgPSBleHBhbmQuZ3JpZChyZWcgPSBjKCd1cCcsJ2RuJyksXG4gICAgICAgICAgICAgICAgICAgICBkYXRhYmFzZSA9IGMoJ3BhdGh3YXknLCdHTycpKVxuQ0hPSUNFb3JhID0gc2FwcGx5KENIT0lDRW9yYSxhcy5jaGFyYWN0ZXIpXG5saXN0bmFtZW9yYSA8LSBhcHBseShDSE9JQ0VvcmEsIDEgLCBmdW5jdGlvbih4KSBwYXN0ZSh4LCBjb2xsYXBzZSA9IFxcX1xcKSlcblxuXG5tYWxlUGF0aHdheUxpc3QgPC0gYXBwbHkoQ0hPSUNFb3JhLCAxLCBmdW5jdGlvbih4KSBtdWx0aU9SQShnZW5lc2V0ID0gQ0FSTklDQUxfbWFsZV9ub2RlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBORVNuYW1lID0gJ0F2Z0FjdCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFBWbmFtZSA9IE5VTEwsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdlbmVuYW1lID0gJ05vZGUnLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmcgPSBDQVJOSUNBTF9tYWxlX25vZGUkTm9kZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHZjdXRvZmYgPSAwLjA1KSlcblxubmFtZXMobWFsZVBhdGh3YXlMaXN0KSA8LSBsaXN0bmFtZW9yYVxuZmVtYWxlUGF0aHdheUxpc3QgPC0gYXBwbHkoQ0hPSUNFb3JhLCAxLCBmdW5jdGlvbih4KSBtdWx0aU9SQShnZW5lc2V0ID0gQ0FSTklDQUxfZmVtYWxlX25vZGUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5FU25hbWUgPSAnQXZnQWN0JyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUFZuYW1lID0gTlVMTCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ2VuZW5hbWUgPSAnTm9kZScsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHgsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBiZyA9IENBUk5JQ0FMX21hbGVfbm9kZSROb2RlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwdmN1dG9mZiA9IDAuMDUpKVxubmFtZXMoZmVtYWxlUGF0aHdheUxpc3QpIDwtIGxpc3RuYW1lb3JhXG5cblBhdGh3YXlBbGxfZGYgPC0gcmVvcmdhbmlzZWRmKGZlbWFsZVBhdGh3YXlMaXN0LCBtYWxlUGF0aHdheUxpc3QpXG5zaG93Q29tcEVucmljaERvdHBsb3QoUGF0aHdheUFsbF9kZixcbiAgICAgICAgICAgICAgICAgICAgICBwYXRod2F5bmFtZSA9ICdHTycsXG4gICAgICAgICAgICAgICAgICAgICAgc3BsaXQgPSBUUlVFLFxuICAgICAgICAgICAgICAgICAgICAgIHRvcCA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgIHBjdXRvZmYgPSAwLjA1LFxuICAgICAgICAgICAgICAgICAgICAgIHdpZCA9IDE2MDAsXG4gICAgICAgICAgICAgICAgICAgICAgaGVpZ2h0ID0gODAwLFxuICAgICAgICAgICAgICAgICAgICAgIGZpbGVuYW1lID0gcGFzdGUwKFxcLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC9jYXJuaXZhbEdPX1xcLCBmaWxlbmFtZSxcXF9wY3V0MC4wNS5qcGdcXCkpXG5cbnNob3dDb21wRW5yaWNoRG90cGxvdChQYXRod2F5QWxsX2RmLFxuICAgICAgICAgICAgICAgICAgICAgIHBhdGh3YXluYW1lID0gJ3BhdGh3YXknLFxuICAgICAgICAgICAgICAgICAgICAgIHNwbGl0ID0gVFJVRSxcbiAgICAgICAgICAgICAgICAgICAgICB0b3AgPSAxMCxcbiAgICAgICAgICAgICAgICAgICAgICBwY3V0b2ZmID0gMC4wNSxcbiAgICAgICAgICAgICAgICAgICAgICB3aWQgPSAxNTAwLFxuICAgICAgICAgICAgICAgICAgICAgIGhlaWdodCA9IDgwMCxcbiAgICAgICAgICAgICAgICAgICAgICBmaWxlbmFtZSA9IHBhc3RlMChcXC4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvY2Fybml2YWxQYXRod2F5X1xcLCBmaWxlbmFtZSxcXF9wY3V0MC4wNS5qcGdcXCkpXG5cblxuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+CHOICE = expand.grid(sex = c(&#39;male&#39;,&#39;female&#39;),
                      p = c(&#39;normal&#39;,&#39;remo_unstable&#39;),
                      perm = c(&#39;GenePerm&#39;,&#39;samplePerm&#39;))
 
@@ -343,7 +363,7 @@ filename = paste(CHOICE[2*i-1,2],CHOICE[2*i-1,3])
 CHOICEora = expand.grid(reg = c(&#39;up&#39;,&#39;dn&#39;),
                      database = c(&#39;pathway&#39;,&#39;GO&#39;))
 CHOICEora = sapply(CHOICEora,as.character)
-listnameora &lt;- apply(CHOICEora, 1 , function(x) paste(x, collapse = &quot;_&quot;))
+listnameora &lt;- apply(CHOICEora, 1 , function(x) paste(x, collapse = \_\))
 
 
 malePathwayList &lt;- apply(CHOICEora, 1, function(x) multiORA(geneset = CARNICAL_male_node,
@@ -372,7 +392,7 @@ showCompEnrichDotplot(PathwayAll_df,
                       pcutoff = 0.05,
                       wid = 1600,
                       height = 800,
-                      filename = paste0(&quot;./results/limma+batch+age/CVD_vs_Control/carnivalGO_&quot;, filename,&quot;_pcut0.05.jpg&quot;))
+                      filename = paste0(\./results/limma+batch+age/CVD_vs_Control/carnivalGO_\, filename,\_pcut0.05.jpg\))
 
 showCompEnrichDotplot(PathwayAll_df,
                       pathwayname = &#39;pathway&#39;,
@@ -381,15 +401,33 @@ showCompEnrichDotplot(PathwayAll_df,
                       pcutoff = 0.05,
                       wid = 1500,
                       height = 800,
-                      filename = paste0(&quot;./results/limma+batch+age/CVD_vs_Control/carnivalPathway_&quot;, filename,&quot;_pcut0.05.jpg&quot;))
+                      filename = paste0(\./results/limma+batch+age/CVD_vs_Control/carnivalPathway_\, filename,\_pcut0.05.jpg\))
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGZzID0gdW5pcXVlKHJlZ3Vsb25zJHRmKVxudGFycyA9IHVuaXF1ZShyZWd1bG9ucyR0YXJnZXQpXG5cblxuXG5pID0gNFxuY2Fybml2YWxfcmVzdWx0X21hPUNBUk5JVkFMX3Jlc3VsdHNfQUxMW1syKmktMV1dXG5jYXJuaXZhbF9yZXN1bHRfZmU9Q0FSTklWQUxfcmVzdWx0c19BTExbWzIqaV1dXG5maWxlbmFtZSA9IHBhc3RlKENIT0lDRVsyKmktMSwyXSxDSE9JQ0VbMippLTEsM10pIFxuXG5cbmNhcm5pdmFsRGVncmVlX21hIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9tYSR3ZWlnaHRlZFNJRilcbmNhcm5pdmFsRGVncmVlX2ZlIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbmNhcm5pdmFsRGVncmVlIDwtIGNhcm5pdmFsRGVncmVlX2ZlICU+JVxuICBmdWxsX2pvaW4oY2Fybml2YWxEZWdyZWVfbWEsYnkgPSBcIk5vZGVcIiwgc3VmZml4ID0gYyhcIi5mZW1hbGVcIiwgXCIubWFsZVwiKSlcblxuXG5jYXJuaXZhbG5vZGVzX2FsbCA9IGNhcm5pdmFsX3Jlc3VsdF9mZSRub2Rlc0F0dHJpYnV0ZXMgJT4lXG4gIGlubmVyX2pvaW4oY2Fybml2YWxfcmVzdWx0X21hJG5vZGVzQXR0cmlidXRlcyxieSA9IFwiTm9kZVwiLFxuICAgICAgICAgICAgIHN1ZmZpeCA9IGMoXCIuZmVtYWxlXCIsIFwiLm1hbGVcIikpICU+JVxuICBsZWZ0X2pvaW4oY2Fybml2YWxEZWdyZWUsIGJ5ID0gXCJOb2RlXCIgKVxuXG5kdGZybSA8LSBjYXJuaXZhbG5vZGVzX2FsbCAlPiVcbiAgbXV0YXRlKGRpZmY9IGFicyhBdmdBY3QuZmVtYWxlLUF2Z0FjdC5tYWxlKSkgJT4lXG4gIGFycmFuZ2UoZGVzYyhkaWZmKSkgJT4lXG4gICMgZHBseXI6OnNlbGVjdChOb2RlLCBBdmdBY3QuZmVtYWxlLCBBdmdBY3QubWFsZSwgcC5mZW1hbGUsIHRvdGFsX2NvdW50LmZlbWFsZSwgcC5tYWxlLCB0b3RhbF9jb3VudC5tYWxlKSAlPiVcbiAgY29sdW1uX3RvX3Jvd25hbWVzKCdOb2RlJylcblxuZHRmcm0kVEYgPC0gTkFcbmR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRhcnNdIDwtICdUYXJnZXQnXG5kdGZybSRURltyb3duYW1lcyhkdGZybSkgJWluJSB0ZnNdIDwtICdURidcblxuXG50b3AgPSAxMDBcbnRvcGR0ZnJtIDwtIHQoZHRmcm1bMTp0b3AsYyhcIkF2Z0FjdC5mZW1hbGVcIixcIkF2Z0FjdC5tYWxlXCIpXSlcbnRvcGRlZ3JlZSA8LSBkdGZybVsxOnRvcCxjKFwidG90YWxfY291bnQuZmVtYWxlXCIsXCJ0b3RhbF9jb3VudC5tYWxlXCIpXVxudG9wZGVncmVlW2lzLm5hKHRvcGRlZ3JlZSldIDwtIDBcblxudG9wYW5ubyA8LSAgZHRmcm1bMTp0b3AsYyhcIk5vZGVUeXBlLmZlbWFsZVwiLFwiTm9kZVR5cGUubWFsZVwiLCdURicpXVxuXG5jb2x1bW5faGEgPSBIZWF0bWFwQW5ub3RhdGlvbiggXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5tYWxlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVncmVlX21hID0gYW5ub190ZXh0KHRvcGRlZ3JlZSR0b3RhbF9jb3VudC5tYWxlLCBsb2NhdGlvbiA9IDAuNSwgcm90ID0gMCwganVzdCA9IFwiY2VudGVyXCIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmVtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5mZW1hbGUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfZmUgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50LmZlbWFsZSwgbG9jYXRpb24gPSAwLjUsIHJvdCA9IDAsIGp1c3QgPSBcImNlbnRlclwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRGID0gdG9wYW5ubyRURixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbCA9IGxpc3QobWFsZSA9IGMoXCJUXCIgPSBcInBpbmtcIiwnUyc9J3llbGxvdycpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmVtYWxlID0gYyhcIlRcIiA9IFwicGlua1wiLCdTJz0neWVsbG93JyksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBURiA9IGMoXCJURlwiID0gXCJwaW5rXCIsIFwiVGFyZ2V0XCIgPSBcImxpZ2h0Ymx1ZVwiKSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhbm5vdGF0aW9uX25hbWVfc2lkZSA9IFwibGVmdFwiKVxuXG5wZGZuYW1lIDwtIHBhc3RlMCgnLi9yZXN1bHRzL2Nhcm5pdmFsX3RvcCcsdG9wLCAgZmlsZW5hbWUsJyBoZWF0bWFwLnBkZicpXG5wZGYocGRmbmFtZSwgd2lkdGggPSAyMiwgaGVpZ2h0ID0gNSlcbmh0X2xpc3QgPSBIZWF0bWFwKFxuICB0b3BkdGZybSxcbiAgdG9wX2Fubm90YXRpb24gPSBjb2x1bW5faGEsXG4gIHdpZHRoID0gdW5pdChuY29sKHRvcGR0ZnJtKS8yLjUsIFwiY21cIiksXG4gIGNsdXN0ZXJfcm93cyA9IEZBTFNFLFxuICBoZWF0bWFwX2xlZ2VuZF9wYXJhbSA9IGxpc3QodGl0bGUgPSAnQWN0aXZpdHkgU2NvcmUnKVxuKVxuZHJhdyhcbiAgaHRfbGlzdCxcbiAgIyBoZWF0bWFwX2xlZ2VuZF9zaWRlID0gXCJsZWZ0XCIsXG4gIGhlYXRtYXBfaGVpZ2h0ID0gdW5pdChucm93KHRvcGR0ZnJtKSozLjUsIFwiY21cIilcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKVxuZGV2Lm9mZigpXG5cblxuYGBgIn0= -->
-<pre class="r"><code>tfs = unique(regulons$tf)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxudGZzID0gdW5pcXVlKHJlZ3Vsb25zJHRmKVxudGFycyA9IHVuaXF1ZShyZWd1bG9ucyR0YXJnZXQpXG5cblxuXG5pID0gNFxuY2Fybml2YWxfcmVzdWx0X21hPUNBUk5JVkFMX3Jlc3VsdHNfQUxMW1syKmktMV1dXG5jYXJuaXZhbF9yZXN1bHRfZmU9Q0FSTklWQUxfcmVzdWx0c19BTExbWzIqaV1dXG5maWxlbmFtZSA9IHBhc3RlKENIT0lDRVsyKmktMSwyXSxDSE9JQ0VbMippLTEsM10pIFxuXG5cbmNhcm5pdmFsRGVncmVlX21hIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9tYSR3ZWlnaHRlZFNJRilcbmNhcm5pdmFsRGVncmVlX2ZlIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbmNhcm5pdmFsRGVncmVlIDwtIGNhcm5pdmFsRGVncmVlX2ZlICU+JVxuICBmdWxsX2pvaW4oY2Fybml2YWxEZWdyZWVfbWEsYnkgPSBcXE5vZGVcXCwgc3VmZml4ID0gYyhcXC5mZW1hbGVcXCwgXFwubWFsZVxcKSlcblxuXG5jYXJuaXZhbG5vZGVzX2FsbCA9IGNhcm5pdmFsX3Jlc3VsdF9mZSRub2Rlc0F0dHJpYnV0ZXMgJT4lXG4gIGlubmVyX2pvaW4oY2Fybml2YWxfcmVzdWx0X21hJG5vZGVzQXR0cmlidXRlcyxieSA9IFxcTm9kZVxcLFxuICAgICAgICAgICAgIHN1ZmZpeCA9IGMoXFwuZmVtYWxlXFwsIFxcLm1hbGVcXCkpICU+JVxuICBsZWZ0X2pvaW4oY2Fybml2YWxEZWdyZWUsIGJ5ID0gXFxOb2RlXFwgKVxuXG5kdGZybSA8LSBjYXJuaXZhbG5vZGVzX2FsbCAlPiVcbiAgbXV0YXRlKGRpZmY9IGFicyhBdmdBY3QuZmVtYWxlLUF2Z0FjdC5tYWxlKSkgJT4lXG4gIGFycmFuZ2UoZGVzYyhkaWZmKSkgJT4lXG4gICMgZHBseXI6OnNlbGVjdChOb2RlLCBBdmdBY3QuZmVtYWxlLCBBdmdBY3QubWFsZSwgcC5mZW1hbGUsIHRvdGFsX2NvdW50LmZlbWFsZSwgcC5tYWxlLCB0b3RhbF9jb3VudC5tYWxlKSAlPiVcbiAgY29sdW1uX3RvX3Jvd25hbWVzKCdOb2RlJylcblxuZHRmcm0kVEYgPC0gTkFcbmR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRhcnNdIDwtICdUYXJnZXQnXG5kdGZybSRURltyb3duYW1lcyhkdGZybSkgJWluJSB0ZnNdIDwtICdURidcblxuXG50b3AgPSAxMDBcbnRvcGR0ZnJtIDwtIHQoZHRmcm1bMTp0b3AsYyhcXEF2Z0FjdC5mZW1hbGVcXCxcXEF2Z0FjdC5tYWxlXFwpXSlcbnRvcGRlZ3JlZSA8LSBkdGZybVsxOnRvcCxjKFxcdG90YWxfY291bnQuZmVtYWxlXFwsXFx0b3RhbF9jb3VudC5tYWxlXFwpXVxudG9wZGVncmVlW2lzLm5hKHRvcGRlZ3JlZSldIDwtIDBcblxudG9wYW5ubyA8LSAgZHRmcm1bMTp0b3AsYyhcXE5vZGVUeXBlLmZlbWFsZVxcLFxcTm9kZVR5cGUubWFsZVxcLCdURicpXVxuXG5jb2x1bW5faGEgPSBIZWF0bWFwQW5ub3RhdGlvbiggXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5tYWxlLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVncmVlX21hID0gYW5ub190ZXh0KHRvcGRlZ3JlZSR0b3RhbF9jb3VudC5tYWxlLCBsb2NhdGlvbiA9IDAuNSwgcm90ID0gMCwganVzdCA9IFxcY2VudGVyXFwpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmVtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5mZW1hbGUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfZmUgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50LmZlbWFsZSwgbG9jYXRpb24gPSAwLjUsIHJvdCA9IDAsIGp1c3QgPSBcXGNlbnRlclxcKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRGID0gdG9wYW5ubyRURixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbCA9IGxpc3QobWFsZSA9IGMoXFxUXFwgPSBcXHBpbmtcXCwnUyc9J3llbGxvdycpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmVtYWxlID0gYyhcXFRcXCA9IFxccGlua1xcLCdTJz0neWVsbG93JyksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBURiA9IGMoXFxURlxcID0gXFxwaW5rXFwsIFxcVGFyZ2V0XFwgPSBcXGxpZ2h0Ymx1ZVxcKSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhbm5vdGF0aW9uX25hbWVfc2lkZSA9IFxcbGVmdFxcKVxuXG5wZGZuYW1lIDwtIHBhc3RlMCgnLi9yZXN1bHRzL2Nhcm5pdmFsX3RvcCcsdG9wLCAgZmlsZW5hbWUsJyBoZWF0bWFwLnBkZicpXG5wZGYocGRmbmFtZSwgd2lkdGggPSAyMiwgaGVpZ2h0ID0gNSlcbmh0X2xpc3QgPSBIZWF0bWFwKFxuICB0b3BkdGZybSxcbiAgdG9wX2Fubm90YXRpb24gPSBjb2x1bW5faGEsXG4gIHdpZHRoID0gdW5pdChuY29sKHRvcGR0ZnJtKS8yLjUsIFxcY21cXCksXG4gIGNsdXN0ZXJfcm93cyA9IEZBTFNFLFxuICBoZWF0bWFwX2xlZ2VuZF9wYXJhbSA9IGxpc3QodGl0bGUgPSAnQWN0aXZpdHkgU2NvcmUnKVxuKVxuZHJhdyhcbiAgaHRfbGlzdCxcbiAgIyBoZWF0bWFwX2xlZ2VuZF9zaWRlID0gXFxsZWZ0XFwsXG4gIGhlYXRtYXBfaGVpZ2h0ID0gdW5pdChucm93KHRvcGR0ZnJtKSozLjUsIFxcY21cXClcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKVxuZGV2Lm9mZigpXG5cblxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+tfs = unique(regulons$tf)
 tars = unique(regulons$target)
 
 
@@ -403,13 +441,13 @@ filename = paste(CHOICE[2*i-1,2],CHOICE[2*i-1,3])
 carnivalDegree_ma &lt;- getCARNIVALdegree(carnival_result_ma$weightedSIF)
 carnivalDegree_fe &lt;- getCARNIVALdegree(carnival_result_fe$weightedSIF)
 carnivalDegree &lt;- carnivalDegree_fe %&gt;%
-  full_join(carnivalDegree_ma,by = &quot;Node&quot;, suffix = c(&quot;.female&quot;, &quot;.male&quot;))
+  full_join(carnivalDegree_ma,by = \Node\, suffix = c(\.female\, \.male\))
 
 
 carnivalnodes_all = carnival_result_fe$nodesAttributes %&gt;%
-  inner_join(carnival_result_ma$nodesAttributes,by = &quot;Node&quot;,
-             suffix = c(&quot;.female&quot;, &quot;.male&quot;)) %&gt;%
-  left_join(carnivalDegree, by = &quot;Node&quot; )
+  inner_join(carnival_result_ma$nodesAttributes,by = \Node\,
+             suffix = c(\.female\, \.male\)) %&gt;%
+  left_join(carnivalDegree, by = \Node\ )
 
 dtfrm &lt;- carnivalnodes_all %&gt;%
   mutate(diff= abs(AvgAct.female-AvgAct.male)) %&gt;%
@@ -423,47 +461,65 @@ dtfrm$TF[rownames(dtfrm) %in% tfs] &lt;- &#39;TF&#39;
 
 
 top = 100
-topdtfrm &lt;- t(dtfrm[1:top,c(&quot;AvgAct.female&quot;,&quot;AvgAct.male&quot;)])
-topdegree &lt;- dtfrm[1:top,c(&quot;total_count.female&quot;,&quot;total_count.male&quot;)]
+topdtfrm &lt;- t(dtfrm[1:top,c(\AvgAct.female\,\AvgAct.male\)])
+topdegree &lt;- dtfrm[1:top,c(\total_count.female\,\total_count.male\)]
 topdegree[is.na(topdegree)] &lt;- 0
 
-topanno &lt;-  dtfrm[1:top,c(&quot;NodeType.female&quot;,&quot;NodeType.male&quot;,&#39;TF&#39;)]
+topanno &lt;-  dtfrm[1:top,c(\NodeType.female\,\NodeType.male\,&#39;TF&#39;)]
 
 column_ha = HeatmapAnnotation( 
                               male = topanno$NodeType.male,
-                              degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = &quot;center&quot;),
+                              degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = \center\),
                               female = topanno$NodeType.female,
-                              degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = &quot;center&quot;),
+                              degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = \center\),
                               TF = topanno$TF,
-                              col = list(male = c(&quot;T&quot; = &quot;pink&quot;,&#39;S&#39;=&#39;yellow&#39;),
-                              female = c(&quot;T&quot; = &quot;pink&quot;,&#39;S&#39;=&#39;yellow&#39;),
-                              TF = c(&quot;TF&quot; = &quot;pink&quot;, &quot;Target&quot; = &quot;lightblue&quot;)),
-                              annotation_name_side = &quot;left&quot;)
+                              col = list(male = c(\T\ = \pink\,&#39;S&#39;=&#39;yellow&#39;),
+                              female = c(\T\ = \pink\,&#39;S&#39;=&#39;yellow&#39;),
+                              TF = c(\TF\ = \pink\, \Target\ = \lightblue\)),
+                              annotation_name_side = \left\)
 
 pdfname &lt;- paste0(&#39;./results/carnival_top&#39;,top,  filename,&#39; heatmap.pdf&#39;)
 pdf(pdfname, width = 22, height = 5)
 ht_list = Heatmap(
   topdtfrm,
   top_annotation = column_ha,
-  width = unit(ncol(topdtfrm)/2.5, &quot;cm&quot;),
+  width = unit(ncol(topdtfrm)/2.5, \cm\),
   cluster_rows = FALSE,
   heatmap_legend_param = list(title = &#39;Activity Score&#39;)
 )
 draw(
   ht_list,
-  # heatmap_legend_side = &quot;left&quot;,
-  heatmap_height = unit(nrow(topdtfrm)*3.5, &quot;cm&quot;)
+  # heatmap_legend_side = \left\,
+  heatmap_height = unit(nrow(topdtfrm)*3.5, \cm\)
                                 )
 dev.off()
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>TOPology analysis of CARNIVAL</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzb3VyY2UoJ3N1cHBvcnRfbmV0d29ya3MucicpXG4jIHNvdXJjZSgnQ0FSTklWQUxuZXR3b3JrLlInKVxuIyBcbiMgXG4jICMgZ2V0IG9ubHkgc3VtbWFyeSBmaWxlcyBmcm9tIENBUk5JVkFMIHJlc3VsdHNcbiMgc2lmdHMgPSBsaXN0KG1hbGUgPSBjYXJuaXZhbF9yZXN1bHRfbWEkd2VpZ2h0ZWRTSUYsZmVtYWxlID0gY2Fybml2YWxfcmVzdWx0X2ZlJHdlaWdodGVkU0lGKVxuIyBub2RvcyA9IGxpc3QobWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9tYSRub2Rlc0F0dHJpYnV0ZXMsZmVtYWxlID0gY2Fybml2YWxfcmVzdWx0X2ZlJG5vZGVzQXR0cmlidXRlcylcbiMgaW50ZXJhY3Rpb25zID0gZ2V0VG9wb2xvZ3kobmV0d29ya3MgPSBzaWZ0cywgc2NhZm9sZE5FVCA9IHNpZilcblxuYGBgIn0= -->
-<pre class="r"><code># source(&#39;support_networks.r&#39;)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+
+TOPology analysis of CARNIVAL
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzb3VyY2UoJ3N1cHBvcnRfbmV0d29ya3MucicpXG4jIHNvdXJjZSgnQ0FSTklWQUxuZXR3b3JrLlInKVxuIyBcbiMgXG4jICMgZ2V0IG9ubHkgc3VtbWFyeSBmaWxlcyBmcm9tIENBUk5JVkFMIHJlc3VsdHNcbiMgc2lmdHMgPSBsaXN0KG1hbGUgPSBjYXJuaXZhbF9yZXN1bHRfbWEkd2VpZ2h0ZWRTSUYsZmVtYWxlID0gY2Fybml2YWxfcmVzdWx0X2ZlJHdlaWdodGVkU0lGKVxuIyBub2RvcyA9IGxpc3QobWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9tYSRub2Rlc0F0dHJpYnV0ZXMsZmVtYWxlID0gY2Fybml2YWxfcmVzdWx0X2ZlJG5vZGVzQXR0cmlidXRlcylcbiMgaW50ZXJhY3Rpb25zID0gZ2V0VG9wb2xvZ3kobmV0d29ya3MgPSBzaWZ0cywgc2NhZm9sZE5FVCA9IHNpZilcblxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+# source(&#39;support_networks.r&#39;)
 # source(&#39;CARNIVALnetwork.R&#39;)
 # 
 # 
@@ -472,13 +528,37 @@ dev.off()
 # nodos = list(male = carnival_result_ma$nodesAttributes,female = carnival_result_fe$nodesAttributes)
 # interactions = getTopology(networks = sifts, scafoldNET = sif)
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzb3VyY2UoJ0NBUk5JVkFMbmV0d29yay5SJylcbiMgXG4jICMgc2F2ZUNhcm5pdmFsIDwtIGZ1bmN0aW9uKFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0LHRmX2FjdGl2aXRpZXNfY2Fybml2YWwpe1xuIyAjIGNhcm5pdmFsX3Jlc3VsdCA8LSBnZXRDQVJOSVZBTHJlc3VsdChQYXRod2F5QWN0aXZpdHlfQ0FSTklWQUxpbnB1dCwgdGZfYWN0aXZpdGllc19jYXJuaXZhbClcbiMgIyB2aXNOZXQgPSBjYXJuaXZhbF92aXNOZXQoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiMgIyAgICAgICAgICAgICAgICAgICAgICAgICAgbnZpcyA9IGNhcm5pdmFsX3Jlc3VsdCRub2Rlc0F0dHJpYnV0ZXMpXG4jICMgdmlzU2F2ZSh2aXNOZXQsIGZpbGUgPSBwYXN0ZTAoJy4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvJyxuYW1lLCdfUHJvZz0nLHRvcCwnX2Nhcm5pdmFsX3Zpc05ldHdvcms0OTZfJyxmbGFnbmFtZSwnLmh0bWwnKSwgc2VsZmNvbnRhaW5lZCA9IFRSVUUpXG4jICMgc2F2ZSh2aXNOZXQsIGNhcm5pdmFsX3Jlc3VsdCwgZmlsZSA9IHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC8nLG5hbWUsJ19Qcm9nPScsdG9wLCdfY2Fybml2YWxfdmlzTmV0d29yazQ5Nl8nLGZsYWduYW1lLCcuUkRhdGEnKSlcbiMgIyB9XG4jIFxuIyAjIG1hbGUgY2Fybml2YWxcbiMgbmFtZSA9IFwibWFsZVwiXG4jIFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0ID0gcHJvZ2VueVNjb3JlICU+JVxuIyAgIHRpYmJsZTo6Y29sdW1uX3RvX3Jvd25hbWVzKHZhciA9ICdQYXRod2F5JyklPiVcbiMgICBkcGx5cjo6c2VsZWN0KG1hbGUpXG4jIHRmX2FjdGl2aXRpZXNfY2Fybml2YWwgPC0gVEZfYWN0aXZpdHlfYWxsICU+JVxuIyAgIHRpYmJsZTo6Y29sdW1uX3RvX3Jvd25hbWVzKHZhciA9ICdURicpJT4lXG4jICAgZmlsdGVyKGxhYmVscyA9PSAnTWFsZSBzcGVjaWZpYyBURicpICU+JVxuIyAgICBkcGx5cjo6c2VsZWN0KE5FUy5tYWxlKVxuIyBcbiMgIyBzYXZlQ2Fybml2YWwoUGF0aHdheUFjdGl2aXR5X0NBUk5JVkFMaW5wdXQsdGZfYWN0aXZpdGllc19jYXJuaXZhbClcbiMgY2Fybml2YWxfcmVzdWx0IDwtIGdldENBUk5JVkFMcmVzdWx0KFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0LCB0Zl9hY3Rpdml0aWVzX2Nhcm5pdmFsKVxuIyB2aXNOZXQgPSBjYXJuaXZhbF92aXNOZXQoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiMgICAgICAgICAgICAgICAgICAgICAgICAgIG52aXMgPSBjYXJuaXZhbF9yZXN1bHQkbm9kZXNBdHRyaWJ1dGVzKVxuIyB2aXNTYXZlKHZpc05ldCwgZmlsZSA9IHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC8nLG5hbWUsJ19Qcm9nPScsdG9wLCdfY2Fybml2YWxfdmlzTmV0d29yazQ5Nl8nLGZsYWduYW1lLCcuaHRtbCcpLCBzZWxmY29udGFpbmVkID0gVFJVRSlcbiMgXG4jIFxuIyBzYXZlKHZpc05ldCwgY2Fybml2YWxfcmVzdWx0LCBmaWxlID0gcGFzdGUwKCcuL3Jlc3VsdHMvbGltbWErYmF0Y2grYWdlL0NWRF92c19Db250cm9sLycsbmFtZSwnX1Byb2c9Jyx0b3AsJ19jYXJuaXZhbF92aXNOZXR3b3JrNDk2XycsZmxhZ25hbWUsJy5SRGF0YScpKVxuXG5cbiAgICBcbmBgYCJ9 -->
-<pre class="r"><code># source(&#39;CARNIVALnetwork.R&#39;)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzb3VyY2UoJ0NBUk5JVkFMbmV0d29yay5SJylcbiMgXG4jICMgc2F2ZUNhcm5pdmFsIDwtIGZ1bmN0aW9uKFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0LHRmX2FjdGl2aXRpZXNfY2Fybml2YWwpe1xuIyAjIGNhcm5pdmFsX3Jlc3VsdCA8LSBnZXRDQVJOSVZBTHJlc3VsdChQYXRod2F5QWN0aXZpdHlfQ0FSTklWQUxpbnB1dCwgdGZfYWN0aXZpdGllc19jYXJuaXZhbClcbiMgIyB2aXNOZXQgPSBjYXJuaXZhbF92aXNOZXQoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiMgIyAgICAgICAgICAgICAgICAgICAgICAgICAgbnZpcyA9IGNhcm5pdmFsX3Jlc3VsdCRub2Rlc0F0dHJpYnV0ZXMpXG4jICMgdmlzU2F2ZSh2aXNOZXQsIGZpbGUgPSBwYXN0ZTAoJy4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvJyxuYW1lLCdfUHJvZz0nLHRvcCwnX2Nhcm5pdmFsX3Zpc05ldHdvcms0OTZfJyxmbGFnbmFtZSwnLmh0bWwnKSwgc2VsZmNvbnRhaW5lZCA9IFRSVUUpXG4jICMgc2F2ZSh2aXNOZXQsIGNhcm5pdmFsX3Jlc3VsdCwgZmlsZSA9IHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC8nLG5hbWUsJ19Qcm9nPScsdG9wLCdfY2Fybml2YWxfdmlzTmV0d29yazQ5Nl8nLGZsYWduYW1lLCcuUkRhdGEnKSlcbiMgIyB9XG4jIFxuIyAjIG1hbGUgY2Fybml2YWxcbiMgbmFtZSA9IFxcbWFsZVxcXG4jIFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0ID0gcHJvZ2VueVNjb3JlICU+JVxuIyAgIHRpYmJsZTo6Y29sdW1uX3RvX3Jvd25hbWVzKHZhciA9ICdQYXRod2F5JyklPiVcbiMgICBkcGx5cjo6c2VsZWN0KG1hbGUpXG4jIHRmX2FjdGl2aXRpZXNfY2Fybml2YWwgPC0gVEZfYWN0aXZpdHlfYWxsICU+JVxuIyAgIHRpYmJsZTo6Y29sdW1uX3RvX3Jvd25hbWVzKHZhciA9ICdURicpJT4lXG4jICAgZmlsdGVyKGxhYmVscyA9PSAnTWFsZSBzcGVjaWZpYyBURicpICU+JVxuIyAgICBkcGx5cjo6c2VsZWN0KE5FUy5tYWxlKVxuIyBcbiMgIyBzYXZlQ2Fybml2YWwoUGF0aHdheUFjdGl2aXR5X0NBUk5JVkFMaW5wdXQsdGZfYWN0aXZpdGllc19jYXJuaXZhbClcbiMgY2Fybml2YWxfcmVzdWx0IDwtIGdldENBUk5JVkFMcmVzdWx0KFBhdGh3YXlBY3Rpdml0eV9DQVJOSVZBTGlucHV0LCB0Zl9hY3Rpdml0aWVzX2Nhcm5pdmFsKVxuIyB2aXNOZXQgPSBjYXJuaXZhbF92aXNOZXQoZXZpcyA9IGNhcm5pdmFsX3Jlc3VsdCR3ZWlnaHRlZFNJRixcbiMgICAgICAgICAgICAgICAgICAgICAgICAgIG52aXMgPSBjYXJuaXZhbF9yZXN1bHQkbm9kZXNBdHRyaWJ1dGVzKVxuIyB2aXNTYXZlKHZpc05ldCwgZmlsZSA9IHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC8nLG5hbWUsJ19Qcm9nPScsdG9wLCdfY2Fybml2YWxfdmlzTmV0d29yazQ5Nl8nLGZsYWduYW1lLCcuaHRtbCcpLCBzZWxmY29udGFpbmVkID0gVFJVRSlcbiMgXG4jIFxuIyBzYXZlKHZpc05ldCwgY2Fybml2YWxfcmVzdWx0LCBmaWxlID0gcGFzdGUwKCcuL3Jlc3VsdHMvbGltbWErYmF0Y2grYWdlL0NWRF92c19Db250cm9sLycsbmFtZSwnX1Byb2c9Jyx0b3AsJ19jYXJuaXZhbF92aXNOZXR3b3JrNDk2XycsZmxhZ25hbWUsJy5SRGF0YScpKVxuXG5cbiAgICBcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+# source(&#39;CARNIVALnetwork.R&#39;)
 # 
 # # saveCarnival &lt;- function(PathwayActivity_CARNIVALinput,tf_activities_carnival){
 # # carnival_result &lt;- getCARNIVALresult(PathwayActivity_CARNIVALinput, tf_activities_carnival)
@@ -489,7 +569,7 @@ dev.off()
 # # }
 # 
 # # male carnival
-# name = &quot;male&quot;
+# name = \male\
 # PathwayActivity_CARNIVALinput = progenyScore %&gt;%
 #   tibble::column_to_rownames(var = &#39;Pathway&#39;)%&gt;%
 #   dplyr::select(male)
@@ -508,19 +588,51 @@ dev.off()
 # save(visNet, carnival_result, file = paste0(&#39;./results/limma+batch+age/CVD_vs_Control/&#39;,name,&#39;_Prog=&#39;,top,&#39;_carnival_visNetwork496_&#39;,flagname,&#39;.RData&#39;))
 
     </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>TOPology analysis of CARNIVAL</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzb3VyY2UoJ3N1cHBvcnRfbmV0d29ya3MucicpXG4jIHNvdXJjZSgnQ0FSTklWQUxuZXR3b3JrLlInKVxuIyBcbiMgbG9hZChcIi4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvZmVtYWxlX3RmcHY9MC4xX2xvZ3Byb2dwdj02X2Nhcm5pdmFsX3Jlc3VsdDQ5Ni5SRGF0YVwiKVxuIyBjYXJuaXZhbF9yZXN1bHRfZmUgPSBjYXJuaXZhbF9yZXN1bHRcbiMgbG9hZChcIi4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvbWFsZV90ZnB2PTAuMV9sb2dwcm9ncHY9Nl9jYXJuaXZhbF9yZXN1bHQ0OTYuUkRhdGFcIilcbiMgY2Fybml2YWxfcmVzdWx0X21hID0gY2Fybml2YWxfcmVzdWx0XG4jIFxuIyBzaWYgPSBnZXRTSUYoKVxuIyAjIGdldCBvbmx5IHN1bW1hcnkgZmlsZXMgZnJvbSBDQVJOSVZBTCByZXN1bHRzXG4jIHNpZnRzID0gbGlzdChtYWxlID0gY2Fybml2YWxfcmVzdWx0X21hJHdlaWdodGVkU0lGLGZlbWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbiMgbm9kb3MgPSBsaXN0KG1hbGUgPSBjYXJuaXZhbF9yZXN1bHRfbWEkbm9kZXNBdHRyaWJ1dGVzLGZlbWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9mZSRub2Rlc0F0dHJpYnV0ZXMpXG4jIGludGVyYWN0aW9ucyA9IGdldFRvcG9sb2d5KG5ldHdvcmtzID0gc2lmdHMsIHNjYWZvbGRORVQgPSBzaWYpXG4jIFxuIyBjYXJuaXZhbERlZ3JlZV9tYSA8LSBnZXRDQVJOSVZBTGRlZ3JlZShjYXJuaXZhbF9yZXN1bHRfbWEkd2VpZ2h0ZWRTSUYpXG4jIGNhcm5pdmFsRGVncmVlX2ZlIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbiMgY2Fybml2YWxEZWdyZWUgPC0gY2Fybml2YWxEZWdyZWVfZmUgJT4lXG4jICAgZnVsbF9qb2luKGNhcm5pdmFsRGVncmVlX21hLGJ5ID0gXCJOb2RlXCIsIHN1ZmZpeCA9IGMoXCIuZmVtYWxlXCIsIFwiLm1hbGVcIikpXG4jIFxuIyBcbiMgY2Fybml2YWxub2Rlc19hbGwgPSBjYXJuaXZhbF9yZXN1bHRfZmUkbm9kZXNBdHRyaWJ1dGVzICU+JVxuIyAgIGlubmVyX2pvaW4oY2Fybml2YWxfcmVzdWx0X21hJG5vZGVzQXR0cmlidXRlcyxieSA9IFwiTm9kZVwiLFxuIyAgICAgICAgICAgICAgc3VmZml4ID0gYyhcIi5mZW1hbGVcIiwgXCIubWFsZVwiKSkgJT4lXG4jICAgbGVmdF9qb2luKGNhcm5pdmFsRGVncmVlLCBieSA9IFwiTm9kZVwiIClcbmBgYCJ9 -->
-<pre class="r"><code># source(&#39;support_networks.r&#39;)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TOPology analysis of CARNIVAL
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzb3VyY2UoJ3N1cHBvcnRfbmV0d29ya3MucicpXG4jIHNvdXJjZSgnQ0FSTklWQUxuZXR3b3JrLlInKVxuIyBcbiMgbG9hZChcXC4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvZmVtYWxlX3RmcHY9MC4xX2xvZ3Byb2dwdj02X2Nhcm5pdmFsX3Jlc3VsdDQ5Ni5SRGF0YVxcKVxuIyBjYXJuaXZhbF9yZXN1bHRfZmUgPSBjYXJuaXZhbF9yZXN1bHRcbiMgbG9hZChcXC4vcmVzdWx0cy9saW1tYStiYXRjaCthZ2UvQ1ZEX3ZzX0NvbnRyb2wvbWFsZV90ZnB2PTAuMV9sb2dwcm9ncHY9Nl9jYXJuaXZhbF9yZXN1bHQ0OTYuUkRhdGFcXClcbiMgY2Fybml2YWxfcmVzdWx0X21hID0gY2Fybml2YWxfcmVzdWx0XG4jIFxuIyBzaWYgPSBnZXRTSUYoKVxuIyAjIGdldCBvbmx5IHN1bW1hcnkgZmlsZXMgZnJvbSBDQVJOSVZBTCByZXN1bHRzXG4jIHNpZnRzID0gbGlzdChtYWxlID0gY2Fybml2YWxfcmVzdWx0X21hJHdlaWdodGVkU0lGLGZlbWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbiMgbm9kb3MgPSBsaXN0KG1hbGUgPSBjYXJuaXZhbF9yZXN1bHRfbWEkbm9kZXNBdHRyaWJ1dGVzLGZlbWFsZSA9IGNhcm5pdmFsX3Jlc3VsdF9mZSRub2Rlc0F0dHJpYnV0ZXMpXG4jIGludGVyYWN0aW9ucyA9IGdldFRvcG9sb2d5KG5ldHdvcmtzID0gc2lmdHMsIHNjYWZvbGRORVQgPSBzaWYpXG4jIFxuIyBjYXJuaXZhbERlZ3JlZV9tYSA8LSBnZXRDQVJOSVZBTGRlZ3JlZShjYXJuaXZhbF9yZXN1bHRfbWEkd2VpZ2h0ZWRTSUYpXG4jIGNhcm5pdmFsRGVncmVlX2ZlIDwtIGdldENBUk5JVkFMZGVncmVlKGNhcm5pdmFsX3Jlc3VsdF9mZSR3ZWlnaHRlZFNJRilcbiMgY2Fybml2YWxEZWdyZWUgPC0gY2Fybml2YWxEZWdyZWVfZmUgJT4lXG4jICAgZnVsbF9qb2luKGNhcm5pdmFsRGVncmVlX21hLGJ5ID0gXFxOb2RlXFwsIHN1ZmZpeCA9IGMoXFwuZmVtYWxlXFwsIFxcLm1hbGVcXCkpXG4jIFxuIyBcbiMgY2Fybml2YWxub2Rlc19hbGwgPSBjYXJuaXZhbF9yZXN1bHRfZmUkbm9kZXNBdHRyaWJ1dGVzICU+JVxuIyAgIGlubmVyX2pvaW4oY2Fybml2YWxfcmVzdWx0X21hJG5vZGVzQXR0cmlidXRlcyxieSA9IFxcTm9kZVxcLFxuIyAgICAgICAgICAgICAgc3VmZml4ID0gYyhcXC5mZW1hbGVcXCwgXFwubWFsZVxcKSkgJT4lXG4jICAgbGVmdF9qb2luKGNhcm5pdmFsRGVncmVlLCBieSA9IFxcTm9kZVxcIClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+# source(&#39;support_networks.r&#39;)
 # source(&#39;CARNIVALnetwork.R&#39;)
 # 
-# load(&quot;./results/limma+batch+age/CVD_vs_Control/female_tfpv=0.1_logprogpv=6_carnival_result496.RData&quot;)
+# load(\./results/limma+batch+age/CVD_vs_Control/female_tfpv=0.1_logprogpv=6_carnival_result496.RData\)
 # carnival_result_fe = carnival_result
-# load(&quot;./results/limma+batch+age/CVD_vs_Control/male_tfpv=0.1_logprogpv=6_carnival_result496.RData&quot;)
+# load(\./results/limma+batch+age/CVD_vs_Control/male_tfpv=0.1_logprogpv=6_carnival_result496.RData\)
 # carnival_result_ma = carnival_result
 # 
 # sif = getSIF()
@@ -532,20 +644,38 @@ dev.off()
 # carnivalDegree_ma &lt;- getCARNIVALdegree(carnival_result_ma$weightedSIF)
 # carnivalDegree_fe &lt;- getCARNIVALdegree(carnival_result_fe$weightedSIF)
 # carnivalDegree &lt;- carnivalDegree_fe %&gt;%
-#   full_join(carnivalDegree_ma,by = &quot;Node&quot;, suffix = c(&quot;.female&quot;, &quot;.male&quot;))
+#   full_join(carnivalDegree_ma,by = \Node\, suffix = c(\.female\, \.male\))
 # 
 # 
 # carnivalnodes_all = carnival_result_fe$nodesAttributes %&gt;%
-#   inner_join(carnival_result_ma$nodesAttributes,by = &quot;Node&quot;,
-#              suffix = c(&quot;.female&quot;, &quot;.male&quot;)) %&gt;%
-#   left_join(carnivalDegree, by = &quot;Node&quot; )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBsaWJyYXJ5KGdncGxvdDIpXG4jIGxpYnJhcnkoQ29tcGxleEhlYXRtYXApXG4jIFxuIyB0ZnMgPSB1bmlxdWUocmVndWxvbnMkdGYpXG4jIHRhcnMgPSB1bmlxdWUocmVndWxvbnMkdGFyZ2V0KVxuIyBcbiMgZHRmcm0gPC0gY2Fybml2YWxub2Rlc19hbGwgJT4lXG4jICAgbXV0YXRlKGRpZmY9IGFicyhBdmdBY3QuZmVtYWxlLUF2Z0FjdC5tYWxlKSkgJT4lXG4jICAgYXJyYW5nZShkZXNjKGRpZmYpKSAlPiVcbiMgICAjIGRwbHlyOjpzZWxlY3QoTm9kZSwgQXZnQWN0LmZlbWFsZSwgQXZnQWN0Lm1hbGUsIHAuZmVtYWxlLCB0b3RhbF9jb3VudC5mZW1hbGUsIHAubWFsZSwgdG90YWxfY291bnQubWFsZSkgJT4lXG4jICAgY29sdW1uX3RvX3Jvd25hbWVzKCdOb2RlJylcbiMgXG4jIGR0ZnJtJFRGIDwtIE5BXG4jIGR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRhcnNdIDwtICdUYXJnZXQnXG4jIGR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRmc10gPC0gJ1RGJ1xuIyBcbiMgXG4jIHRvcCA9IDEwMFxuIyB0b3BkdGZybSA8LSB0KGR0ZnJtWzE6dG9wLGMoXCJBdmdBY3QuZmVtYWxlXCIsXCJBdmdBY3QubWFsZVwiKV0pXG4jIHRvcGRlZ3JlZSA8LSBkdGZybVsxOnRvcCxjKFwidG90YWxfY291bnQuZmVtYWxlXCIsXCJ0b3RhbF9jb3VudC5tYWxlXCIpXVxuIyB0b3BkZWdyZWVbaXMubmEodG9wZGVncmVlKV0gPC0gMFxuIyBcbiMgdG9wYW5ubyA8LSAgZHRmcm1bMTp0b3AsYyhcIk5vZGVUeXBlLmZlbWFsZVwiLFwiTm9kZVR5cGUubWFsZVwiLCdURicpXVxuIyBcbiMgY29sdW1uX2hhID0gSGVhdG1hcEFubm90YXRpb24oIFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5tYWxlLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfbWEgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50Lm1hbGUsIGxvY2F0aW9uID0gMC41LCByb3QgPSAwLCBqdXN0ID0gXCJjZW50ZXJcIiksXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZlbWFsZSA9IHRvcGFubm8kTm9kZVR5cGUuZmVtYWxlLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfZmUgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50LmZlbWFsZSwgbG9jYXRpb24gPSAwLjUsIHJvdCA9IDAsIGp1c3QgPSBcImNlbnRlclwiKSxcbiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEYgPSB0b3Bhbm5vJFRGLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2wgPSBsaXN0KG1hbGUgPSBjKFwiVFwiID0gXCJwaW5rXCIsIFwiU1wiID0gXCJ5ZWxsb3dcIiksXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZlbWFsZSA9IGMoXCJUXCIgPSBcInBpbmtcIiwgXCJTXCIgPSBcInllbGxvd1wiKSxcbiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEYgPSBjKFwiVEZcIiA9IFwicGlua1wiLCBcIlRhcmdldFwiID0gXCJsaWdodGJsdWVcIikpLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhbm5vdGF0aW9uX25hbWVfc2lkZSA9IFwibGVmdFwiKVxuIyBwZGZuYW1lIDwtIHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC90ZnB2PTAuMV9sb2dwcm9ncHY9Nl9jYXJuaXZhbF90b3AnLHRvcCwnIDQ5Ni5wZGYnKVxuIyBwZGYocGRmbmFtZSwgd2lkdGggPSAyMiwgaGVpZ2h0ID0gNSlcbiMgaHRfbGlzdCA9IEhlYXRtYXAoXG4jICAgdG9wZHRmcm0sXG4jICAgdG9wX2Fubm90YXRpb24gPSBjb2x1bW5faGEsXG4jICAgd2lkdGggPSB1bml0KG5jb2wodG9wZHRmcm0pLzIuNSwgXCJjbVwiKSxcbiMgICBjbHVzdGVyX3Jvd3MgPSBGQUxTRSxcbiMgICBoZWF0bWFwX2xlZ2VuZF9wYXJhbSA9IGxpc3QodGl0bGUgPSAnQWN0aXZpdHkgU2NvcmUnKVxuIyApXG4jIGRyYXcoXG4jICAgaHRfbGlzdCxcbiMgICAjIGhlYXRtYXBfbGVnZW5kX3NpZGUgPSBcImxlZnRcIixcbiMgICBoZWF0bWFwX2hlaWdodCA9IHVuaXQobnJvdyh0b3BkdGZybSkqMy41LCBcImNtXCIpXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKVxuIyBkZXYub2ZmKClcblxuXG5gYGAifQ== -->
-<pre class="r"><code># library(ggplot2)
+#   inner_join(carnival_result_ma$nodesAttributes,by = \Node\,
+#              suffix = c(\.female\, \.male\)) %&gt;%
+#   left_join(carnivalDegree, by = \Node\ )</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBsaWJyYXJ5KGdncGxvdDIpXG4jIGxpYnJhcnkoQ29tcGxleEhlYXRtYXApXG4jIFxuIyB0ZnMgPSB1bmlxdWUocmVndWxvbnMkdGYpXG4jIHRhcnMgPSB1bmlxdWUocmVndWxvbnMkdGFyZ2V0KVxuIyBcbiMgZHRmcm0gPC0gY2Fybml2YWxub2Rlc19hbGwgJT4lXG4jICAgbXV0YXRlKGRpZmY9IGFicyhBdmdBY3QuZmVtYWxlLUF2Z0FjdC5tYWxlKSkgJT4lXG4jICAgYXJyYW5nZShkZXNjKGRpZmYpKSAlPiVcbiMgICAjIGRwbHlyOjpzZWxlY3QoTm9kZSwgQXZnQWN0LmZlbWFsZSwgQXZnQWN0Lm1hbGUsIHAuZmVtYWxlLCB0b3RhbF9jb3VudC5mZW1hbGUsIHAubWFsZSwgdG90YWxfY291bnQubWFsZSkgJT4lXG4jICAgY29sdW1uX3RvX3Jvd25hbWVzKCdOb2RlJylcbiMgXG4jIGR0ZnJtJFRGIDwtIE5BXG4jIGR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRhcnNdIDwtICdUYXJnZXQnXG4jIGR0ZnJtJFRGW3Jvd25hbWVzKGR0ZnJtKSAlaW4lIHRmc10gPC0gJ1RGJ1xuIyBcbiMgXG4jIHRvcCA9IDEwMFxuIyB0b3BkdGZybSA8LSB0KGR0ZnJtWzE6dG9wLGMoXFxBdmdBY3QuZmVtYWxlXFwsXFxBdmdBY3QubWFsZVxcKV0pXG4jIHRvcGRlZ3JlZSA8LSBkdGZybVsxOnRvcCxjKFxcdG90YWxfY291bnQuZmVtYWxlXFwsXFx0b3RhbF9jb3VudC5tYWxlXFwpXVxuIyB0b3BkZWdyZWVbaXMubmEodG9wZGVncmVlKV0gPC0gMFxuIyBcbiMgdG9wYW5ubyA8LSAgZHRmcm1bMTp0b3AsYyhcXE5vZGVUeXBlLmZlbWFsZVxcLFxcTm9kZVR5cGUubWFsZVxcLCdURicpXVxuIyBcbiMgY29sdW1uX2hhID0gSGVhdG1hcEFubm90YXRpb24oIFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtYWxlID0gdG9wYW5ubyROb2RlVHlwZS5tYWxlLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfbWEgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50Lm1hbGUsIGxvY2F0aW9uID0gMC41LCByb3QgPSAwLCBqdXN0ID0gXFxjZW50ZXJcXCksXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZlbWFsZSA9IHRvcGFubm8kTm9kZVR5cGUuZmVtYWxlLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWdyZWVfZmUgPSBhbm5vX3RleHQodG9wZGVncmVlJHRvdGFsX2NvdW50LmZlbWFsZSwgbG9jYXRpb24gPSAwLjUsIHJvdCA9IDAsIGp1c3QgPSBcXGNlbnRlclxcKSxcbiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEYgPSB0b3Bhbm5vJFRGLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2wgPSBsaXN0KG1hbGUgPSBjKFxcVFxcID0gXFxwaW5rXFwsIFxcU1xcID0gXFx5ZWxsb3dcXCksXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZlbWFsZSA9IGMoXFxUXFwgPSBcXHBpbmtcXCwgXFxTXFwgPSBcXHllbGxvd1xcKSxcbiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEYgPSBjKFxcVEZcXCA9IFxccGlua1xcLCBcXFRhcmdldFxcID0gXFxsaWdodGJsdWVcXCkpLFxuIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhbm5vdGF0aW9uX25hbWVfc2lkZSA9IFxcbGVmdFxcKVxuIyBwZGZuYW1lIDwtIHBhc3RlMCgnLi9yZXN1bHRzL2xpbW1hK2JhdGNoK2FnZS9DVkRfdnNfQ29udHJvbC90ZnB2PTAuMV9sb2dwcm9ncHY9Nl9jYXJuaXZhbF90b3AnLHRvcCwnIDQ5Ni5wZGYnKVxuIyBwZGYocGRmbmFtZSwgd2lkdGggPSAyMiwgaGVpZ2h0ID0gNSlcbiMgaHRfbGlzdCA9IEhlYXRtYXAoXG4jICAgdG9wZHRmcm0sXG4jICAgdG9wX2Fubm90YXRpb24gPSBjb2x1bW5faGEsXG4jICAgd2lkdGggPSB1bml0KG5jb2wodG9wZHRmcm0pLzIuNSwgXFxjbVxcKSxcbiMgICBjbHVzdGVyX3Jvd3MgPSBGQUxTRSxcbiMgICBoZWF0bWFwX2xlZ2VuZF9wYXJhbSA9IGxpc3QodGl0bGUgPSAnQWN0aXZpdHkgU2NvcmUnKVxuIyApXG4jIGRyYXcoXG4jICAgaHRfbGlzdCxcbiMgICAjIGhlYXRtYXBfbGVnZW5kX3NpZGUgPSBcXGxlZnRcXCxcbiMgICBoZWF0bWFwX2hlaWdodCA9IHVuaXQobnJvdyh0b3BkdGZybSkqMy41LCBcXGNtXFwpXG4jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKVxuIyBkZXYub2ZmKClcblxuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+# library(ggplot2)
 # library(ComplexHeatmap)
 # 
 # tfs = unique(regulons$tf)
@@ -563,38 +693,39 @@ dev.off()
 # 
 # 
 # top = 100
-# topdtfrm &lt;- t(dtfrm[1:top,c(&quot;AvgAct.female&quot;,&quot;AvgAct.male&quot;)])
-# topdegree &lt;- dtfrm[1:top,c(&quot;total_count.female&quot;,&quot;total_count.male&quot;)]
+# topdtfrm &lt;- t(dtfrm[1:top,c(\AvgAct.female\,\AvgAct.male\)])
+# topdegree &lt;- dtfrm[1:top,c(\total_count.female\,\total_count.male\)]
 # topdegree[is.na(topdegree)] &lt;- 0
 # 
-# topanno &lt;-  dtfrm[1:top,c(&quot;NodeType.female&quot;,&quot;NodeType.male&quot;,&#39;TF&#39;)]
+# topanno &lt;-  dtfrm[1:top,c(\NodeType.female\,\NodeType.male\,&#39;TF&#39;)]
 # 
 # column_ha = HeatmapAnnotation( 
 #                               male = topanno$NodeType.male,
-#                               degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = &quot;center&quot;),
+#                               degree_ma = anno_text(topdegree$total_count.male, location = 0.5, rot = 0, just = \center\),
 #                               female = topanno$NodeType.female,
-#                               degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = &quot;center&quot;),
+#                               degree_fe = anno_text(topdegree$total_count.female, location = 0.5, rot = 0, just = \center\),
 #                               TF = topanno$TF,
-#                               col = list(male = c(&quot;T&quot; = &quot;pink&quot;, &quot;S&quot; = &quot;yellow&quot;),
-#                               female = c(&quot;T&quot; = &quot;pink&quot;, &quot;S&quot; = &quot;yellow&quot;),
-#                               TF = c(&quot;TF&quot; = &quot;pink&quot;, &quot;Target&quot; = &quot;lightblue&quot;)),
-#                               annotation_name_side = &quot;left&quot;)
+#                               col = list(male = c(\T\ = \pink\, \S\ = \yellow\),
+#                               female = c(\T\ = \pink\, \S\ = \yellow\),
+#                               TF = c(\TF\ = \pink\, \Target\ = \lightblue\)),
+#                               annotation_name_side = \left\)
 # pdfname &lt;- paste0(&#39;./results/limma+batch+age/CVD_vs_Control/tfpv=0.1_logprogpv=6_carnival_top&#39;,top,&#39; 496.pdf&#39;)
 # pdf(pdfname, width = 22, height = 5)
 # ht_list = Heatmap(
 #   topdtfrm,
 #   top_annotation = column_ha,
-#   width = unit(ncol(topdtfrm)/2.5, &quot;cm&quot;),
+#   width = unit(ncol(topdtfrm)/2.5, \cm\),
 #   cluster_rows = FALSE,
 #   heatmap_legend_param = list(title = &#39;Activity Score&#39;)
 # )
 # draw(
 #   ht_list,
-#   # heatmap_legend_side = &quot;left&quot;,
-#   heatmap_height = unit(nrow(topdtfrm)*3.5, &quot;cm&quot;)
+#   # heatmap_legend_side = \left\,
+#   heatmap_height = unit(nrow(topdtfrm)*3.5, \cm\)
 #                                 )
 # dev.off()
 </code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->

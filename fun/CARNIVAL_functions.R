@@ -1,6 +1,7 @@
 library(CARNIVAL)
 library(OmnipathR)
 library(visNetwork)
+library(dplyr)
 source("./fun/assignPROGENyScores.r")
 source("./fun/generateTFList.r")
 # source('support_networks.r')
@@ -115,8 +116,8 @@ CARNIVAL_Pipeline = function(cases, idx, sif){
   
   tf_activities_carnival = switch(
     cases[1],
-    male= TF_activity_all %>% tibble::column_to_rownames(var = 'TF')%>% filter(labels == 'Male specific TF') %>% dplyr::select(NES.male),
-    female= TF_activity_all %>% tibble::column_to_rownames(var = 'TF')%>% filter(labels == 'Female specific TF') %>% dplyr::select(NES.female)
+    male= TF_activity_all %>% tibble::column_to_rownames(var = 'TF')%>% dplyr::filter(labels == 'Male specific TF') %>% dplyr::select(NES.male),
+    female= TF_activity_all %>% tibble::column_to_rownames(var = 'TF')%>% dplyr::filter(labels == 'Female specific TF') %>% dplyr::select(NES.female)
   )
   carnival_result <- getCARNIVALresult(PathwayActivity_CARNIVALinput, tf_activities_carnival,sif)
   return(carnival_result)
